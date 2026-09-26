@@ -1,0 +1,20 @@
+package com.app.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+import com.app.models.Invoice;
+import com.app.repository.Invoicejpa;
+@Service
+public class InvoiceServiceImpl implements InvoiceService {
+
+	@Autowired
+	private Invoicejpa dao;
+	
+	@Override
+	public void addinvoice(Invoice invoice) {
+		dao.save(invoice);
+	}
+
+}

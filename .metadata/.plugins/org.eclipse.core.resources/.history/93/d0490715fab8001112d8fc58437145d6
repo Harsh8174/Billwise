@@ -1,0 +1,14 @@
+package com.app.models;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
+public class ReminderAttempt {
+    private int id;
+    private Enum Remainderperiod;
+    private String status;
+    @OneToOne(mappedBy = "")
+    @JoinColumn("Invoice_id")
+    private Invoice invoice;
+}

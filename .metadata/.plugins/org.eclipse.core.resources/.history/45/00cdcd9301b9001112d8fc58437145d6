@@ -1,0 +1,19 @@
+package com.app.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.app.models.Customer;
+import com.app.repository.Customerjpa;
+@Service
+public class CustomerServiceImpl implements CustomerService {
+
+	@Autowired
+	private Customerjpa customerdao;
+	
+	@Override
+	public void addCustomer(Customer customer) {
+		customerdao.save(customer);
+	}
+
+}

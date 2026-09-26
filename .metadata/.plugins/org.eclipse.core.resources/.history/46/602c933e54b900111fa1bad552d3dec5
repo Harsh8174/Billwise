@@ -1,0 +1,11 @@
+package com.app.services;
+
+public class SchedulerServiceImpl implements SchedulerService {
+
+	@Override
+	public void automaticallysend() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

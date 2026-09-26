@@ -1,0 +1,6 @@
+use billingwise;
+create table admin(
+id int primary key auto_increament,
+name varchar(255),
+password varchar(255)
+);

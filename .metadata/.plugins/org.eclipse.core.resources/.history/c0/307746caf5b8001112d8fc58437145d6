@@ -1,0 +1,18 @@
+package com.app.models;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+public class Invoice {
+   private int id;
+   private String Invoice_number;
+   private LocalDate Invoice_due_date;
+   private double Invoice_amount;
+   private String status;
+   
+   @ManyToOne
+   @JoinColumn(name = "customer_id")
+   private Customer customer; 
+}

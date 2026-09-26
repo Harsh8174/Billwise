@@ -1,0 +1,73 @@
+package com.app.services;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.app.enums.InvoiceStatus;
+import com.app.enums.Reminderperiod;
+import com.app.models.Invoice;
+import com.app.models.ReminderAttempt;
+import com.app.repository.Invoicejpa;
+import com.app.repository.RemainderAttemptjpa;
+
+@Component
+public class SchedulerServiceImpl implements SchedulerService {
+
+	@Autowired
+	private Invoicejpa dao;
+	@Autowired
+	private RemainderAttemptjpa attempt;
+	
+	@Autowired
+	private NotificatonService service;
+	@Scheduled(cron = "0 * * * * *")
+	@Override
+	public void automaticallysend() {
+           LocalDate current_date = LocalDate.now(); 
+
+		   List<Invoice> list=dao.findAll();
+           for (Invoice invoice : list) {
+        	   ReminderAttempt reminder=attempt.getById(invoice.getId());
+			   LocalDate invoice_due_date = invoice.getInvoice_due_date();
+		       InvoiceStatus status=invoice.getInvoice_status();
+		       if(status.equals(InvoiceStatus.PAID)==false) {
+		    	   if(reminder!=null &&  current_date.equals(reminder.getDate())==false) {
+		    		   
+		       if(current_date.isBefore(invoice_due_date) ) {
+		    	   ReminderAttempt remainder=new ReminderAttempt();
+		    	   remainder.setInvoice(invoice);
+		    	   remainder.setRemainderperiod(Reminderperiod.Upcoming);
+		    	   remainder.setDate(current_date);
+		    	   remainder.setStatus("Success");
+		    	   attempt.save(remainder);
+		       }
+		       else if(current_date.isAfter(invoice_due_date)) {
+		    	   ReminderAttempt remainder=new ReminderAttempt();
+		    	   remainder.setInvoice(invoice);
+		    	   remainder.setRemainderperiod(Reminderperiod.Due_Today);
+		    	   remainder.setDate(current_date);
+		    	   remainder.setStatus("Success");
+		    	   attempt.save(remainder);
+		    	   
+		       } else if(current_date.isEqual(invoice_due_date)) {
+		    	   
+		    	   ReminderAttempt remainder=new ReminderAttempt();
+		    	   remainder.setInvoice(invoice);
+		    	   remainder.setRemainderperiod(Reminderperiod.Overdued);
+		    	   remainder.setDate(current_date);
+		    	   remainder.setStatus("Success");
+		    	   attempt.save(remainder);
+		       }
+		       }
+		       }
+		       else {
+		    	   continue;
+		       }
+           }       
+	}
+
+}

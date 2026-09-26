@@ -1,0 +1,13 @@
+package com.app.services;
+
+import com.app.models.Invoice;
+
+public class InvoiceServiceImpl implements InvoiceService {
+
+	@Override
+	public void addinvoice(Invoice invoice) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

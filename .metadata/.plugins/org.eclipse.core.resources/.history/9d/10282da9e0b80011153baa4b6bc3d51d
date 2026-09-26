@@ -1,0 +1,11 @@
+spring.application.name=Billwise
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/Billwise
+spring.datasource.username=root
+spring.datasource.password=Pitambra@8174
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration

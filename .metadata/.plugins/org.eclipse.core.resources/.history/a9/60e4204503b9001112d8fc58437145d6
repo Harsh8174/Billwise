@@ -1,0 +1,16 @@
+package com.app.services;
+
+import org.springframework.stereotype.Repository;
+
+import com.app.models.Invoice;
+@Repository
+public class InvoiceServiceImpl implements InvoiceService {
+
+	private
+	@Override
+	public void addinvoice(Invoice invoice) {
+		
+
+	}
+
+}

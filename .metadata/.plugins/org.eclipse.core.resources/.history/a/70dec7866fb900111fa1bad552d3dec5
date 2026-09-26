@@ -1,0 +1,13 @@
+package com.app.services;
+
+import com.app.models.Admin;
+
+public class AdminServiceImpl implements AdminService {
+
+	@Override
+	public Admin getadmin(Admin admin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

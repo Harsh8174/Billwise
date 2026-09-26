@@ -1,0 +1,1 @@
+insert into admin(username,password) values ("ABC123","A@123");

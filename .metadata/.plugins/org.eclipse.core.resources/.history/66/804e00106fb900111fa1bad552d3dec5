@@ -1,0 +1,7 @@
+package com.app.services;
+
+import com.app.models.Admin;
+
+public interface AdminService {
+   public Admin getadmin(Admin admin)
+}
