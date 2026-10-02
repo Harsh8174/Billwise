@@ -1,0 +1,10 @@
+package com.app.responsedto;
+
+import java.util.List;
+
+import com.app.models.Invoice;
+
+public class Dashboardresponsedto {
+      public List<Invoice> invoices;
+      
+}

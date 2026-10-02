@@ -1,9 +1,13 @@
 package com.app.models;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.app.enums.InvoiceStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,16 +29,30 @@ public class Invoice {
    private int id;
    private String Invoice_number;
    private LocalDate Invoice_date;
+   private Instant created_at;
+   private Instant updated_at;
    private LocalDate Invoice_due_date;
    private double Invoice_amount;
+   private String description;
    
    @Enumerated(EnumType.STRING)
    private InvoiceStatus invoice_status;
    
    @ManyToOne
    @JoinColumn(name = "customer_id")
+    
    private Customer customer; 
    
    @OneToMany(cascade = CascadeType.ALL,mappedBy = "invoice")
+   @JsonIgnore
    private List<ReminderAttempt> reminder;
+
+   @Override
+   public String toString() {
+	return "Invoice [id=" + id + ", Invoice_number=" + Invoice_number + ", Invoice_date=" + Invoice_date
+			+ ", Invoice_due_date=" + Invoice_due_date + ", Invoice_amount=" + Invoice_amount + ", description="
+			+ description + ", invoice_status=" + invoice_status + ", customer=" + customer + "]";
+   }
+   
+   
 }

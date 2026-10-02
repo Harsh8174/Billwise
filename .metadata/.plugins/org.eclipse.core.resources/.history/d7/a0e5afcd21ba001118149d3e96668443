@@ -1,0 +1,21 @@
+package com.app.models;
+
+import java.time.LocalTime;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+public class JobExecution {
+	
+   private int id;
+   private int found;
+   private int sent;
+   private int failed;
+   private int skipped;
+   private LocalTime started_at;
+   private LocalTime ended_at;
+   @ManyToOne
+   @JoinColumn(name = "Scheduler_job_id")
+   private SchedulerJob scheduler;
+   
+}

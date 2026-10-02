@@ -1,0 +1,20 @@
+package com.app.responsedto;
+
+import java.time.LocalTime;
+
+import com.app.enums.JobTrigger;
+import com.app.enums.Reminderperiod;
+
+import lombok.Data;
+@Data
+public class Jobexecutionresponse {
+	   private int id;
+	   private int found;
+	   private int sent;
+	   private int failed;
+	   private int skipped;
+	   private LocalTime started_at;
+	   private LocalTime ended_at;
+	   private Reminderperiod type;
+	   private JobTrigger trigger;
+}

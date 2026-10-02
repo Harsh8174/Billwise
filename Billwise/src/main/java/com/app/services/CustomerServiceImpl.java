@@ -1,5 +1,7 @@
 package com.app.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,18 @@ public class CustomerServiceImpl implements CustomerService {
 	private Customerjpa customerdao;
 	
 	@Override
-	public void addCustomer(Customer customer) {
-		customerdao.save(customer);
+	public Customer addCustomer(Customer customer) {
+		return customerdao.save(customer);
 	}
      @Override
     public Customer getcustomer(int id) {
-    	Customer customer=customerdao.getById(id);
+    	Customer customer= customerdao.getById(id);
     	return customer;
+    }
+     
+     @Override
+    public List<Customer> getall() {
+    	
+    	return customerdao.findAll();
     }
 }

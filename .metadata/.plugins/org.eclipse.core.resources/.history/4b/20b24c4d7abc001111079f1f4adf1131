@@ -1,0 +1,7 @@
+package com.app.requestdto;
+
+public class Invoicedto {
+	  private String name;
+	  private String email;
+	  
+}

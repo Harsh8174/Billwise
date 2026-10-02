@@ -1,0 +1,13 @@
+package com.app.services;
+
+
+
+import java.util.List;
+
+import com.app.models.JobExecution;
+
+public interface JobExecutionService {
+	
+	   public List<JobExecution> getalljobs();
+	   
+}

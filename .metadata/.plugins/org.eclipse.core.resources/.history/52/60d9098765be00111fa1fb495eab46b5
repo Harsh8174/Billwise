@@ -1,0 +1,67 @@
+package com.app.services;
+
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+import com.app.enums.InvoiceStatus;
+import com.app.models.Invoice;
+import com.app.repository.Invoicejpa;
+import com.app.responsedto.Invoicedto;
+
+import jakarta.annotation.PostConstruct;
+@Service
+public class InvoiceServiceImpl implements InvoiceService {
+
+	@Autowired
+	private Invoicejpa dao;
+	
+	@Override
+	public Invoice addinvoice(Invoice invoice) {
+		return dao.save(invoice);
+	}	 
+	
+	@Override
+	public List<Invoice> getallInvoices() {
+		
+		return dao.findAll();
+	}
+	
+	@Override
+	public Invoice getInvoiceById(int id) {
+		
+		return dao.getInvoiceById(id);
+	}
+	
+	@PostConstruct
+	public void UpdateInvoiceStatus() {
+		    List<Invoice> invoice =  dao.findAll();
+		     
+		    for (Invoice invoice2 : invoice) {
+		    	long day=ChronoUnit.DAYS.between(LocalDate.now(), invoice2.getInvoice_due_date());
+			    if(day<5 && day>0) {
+			    	invoice2.setInvoice_status(InvoiceStatus.PENDING);
+			    	dao.save(invoice2);
+			    }
+			    else if(day<0) {
+			    	invoice2.setInvoice_status(InvoiceStatus.OVERDUE);
+			    	dao.save(invoice2);
+			    }else {
+			    	invoice2.setInvoice_status(InvoiceStatus.DUE);
+			    	dao.save(invoice2);
+			    }
+		    }
+	}
+	
+	@Override
+	public Invoicedto updatestatus(int id, InvoiceStatus status) {
+		
+		return null;
+	}
+}

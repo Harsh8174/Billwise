@@ -1,0 +1,8 @@
+package com.app.services;
+
+import com.app.requestdto.Schdulerdto;
+
+public interface SchedulerService {	
+   public void addscheduler(Schdulerdto dto);	
+   public void automaticallysend();
+}

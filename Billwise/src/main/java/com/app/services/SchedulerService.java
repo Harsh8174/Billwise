@@ -1,5 +1,18 @@
 package com.app.services;
 
+import java.util.List;
+
+import com.app.models.JobExecution;
+import com.app.models.SchedulerJob;
+import com.app.requestdto.Schdulerdto;
+import com.app.responsedto.Jobexecutionresponse;
+
 public interface SchedulerService {	
-   public void automaticallysend();
+   public void addscheduler(Schdulerdto dto);	
+   public void startscheduler();
+   public void automaticallysend(SchedulerJob SchedulerJob,JobExecution job);
+   public List<SchedulerJob> getallschedulerjob();
+   public SchedulerJob enabletstatus(int id,Schdulerdto dto);
+   public SchedulerJob getjob(int id);
+   Jobexecutionresponse RunNow(int id);
 }

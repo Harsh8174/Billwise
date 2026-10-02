@@ -1,0 +1,20 @@
+package com.app.responsedto;
+
+import java.time.LocalDate;
+
+import com.app.enums.Reminderperiod;
+
+import jakarta.persistence.Column;
+
+public class ReminderAttemptdto {
+//  id: raw.id,
+//    invoiceId: raw.invoice?.id,
+//    period: mapPeriod(raw.remainderperiod),
+//    attemptedAt: raw.date, // backend only stores a date, not a timestamp — see note below
+//    status: raw.status?.toUpperCase() === "SUCCESS" ? "SUCCESS" : "FAILED",
+
+	private int id;
+	private Reminderperiod remainderperiod;
+	private String status;
+	private LocalDate attemptedAt;
+}

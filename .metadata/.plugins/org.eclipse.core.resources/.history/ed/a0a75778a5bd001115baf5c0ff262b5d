@@ -1,0 +1,44 @@
+package com.app.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.models.Customer;
+import com.app.responsedto.Customerdto;
+import com.app.services.CustomerService;
+
+@RestController
+@RequestMapping("customer")
+@CrossOrigin(origins = "http://localhost:5500",allowCredentials = "true")
+public class CustomerController {
+    
+	@Autowired
+	private CustomerService service;
+	
+	@PostMapping("add")
+	  public Customerdto addcustomer(@RequestBody Customer customer) {
+		   Customer customer_created = service.addCustomer(customer);
+		    Customerdto response=new Customerdto();
+		    response.setId(customer_created.getId());
+		    response.setEmail(customer_created.getEmail());
+		    response.setName(customer_created.getName());
+		    return response;
+	  }
+	@GetMapping("get/{id}")
+	public Customer getcustomer(@PathVariable int id) {
+	  return service.getcustomer(id);
+	}
+	
+	@GetMapping("get/all")
+	public List<Customer> getallcustomer(){
+		return service.getall();
+	}
+}

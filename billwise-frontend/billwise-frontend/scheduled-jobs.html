@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Scheduled Jobs · BillWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  .job-card { border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); margin-bottom: 16px; overflow: hidden; }
+  .job-head { display:flex; align-items:center; justify-content:space-between; padding: 18px 22px; }
+  .job-title { display:flex; align-items:center; gap:12px; }
+  .job-title h3 { margin:0; font-size:16px; font-weight:600; }
+  .job-meta { font-size: 12.5px; color: var(--slate); margin-top:3px; }
+  .job-actions { display:flex; align-items:center; gap:10px; }
+
+  .switch { position: relative; width: 40px; height: 22px; flex-shrink:0; }
+  .switch input { opacity:0; width:0; height:0; }
+  .switch .track { position:absolute; inset:0; background: var(--line-strong); border-radius: 999px; cursor:pointer; transition: background 0.15s ease; }
+  .switch .thumb { position:absolute; top:2px; left:2px; width:18px; height:18px; background:#fff; border-radius:50%; transition: transform 0.15s ease; box-shadow: var(--shadow-sm); }
+  .switch input:checked + .track { background: var(--success); }
+  .switch input:checked + .track .thumb { transform: translateX(18px); }
+
+  .job-body { padding: 0 22px 20px; display:flex; gap: 28px; flex-wrap:wrap; }
+  .job-stat { font-size: 13px; }
+  .job-stat .label { color: var(--slate); display:block; margin-bottom:2px; }
+  .job-history-toggle { padding: 12px 22px; border-top: 1px solid var(--line); background: var(--paper); font-size: 13px; font-weight: 600; color: var(--gold-ink); cursor: pointer; user-select:none; }
+  .job-history { display:none; border-top: 1px solid var(--line); }
+  .job-history.open { display:block; }
+
+  .schedule-form { padding: 16px 22px 20px; background: var(--paper); border-top: 1px solid var(--line); }
+  .sf-row { display:flex; gap:14px; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; }
+  .sf-row:last-of-type { margin-bottom: 6px; }
+  .sf-label { font-size:11px; font-weight:700; color:var(--slate); text-transform:uppercase; letter-spacing:0.4px; min-width:64px; padding-top:8px; flex-shrink:0; }
+  .sf-control { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .sf-control select {
+    padding:8px 10px; border:1px solid var(--line-strong); border-radius:6px;
+    font-size:12.5px; font-family:inherit; background:var(--surface); color:var(--text);
+  }
+  .time-select-group { display:flex; align-items:center; gap:6px; }
+  .time-select-group span { color: var(--slate); font-size: 13px; }
+  .sf-preview { font-size:12.5px; color:var(--slate); margin: 2px 0 14px; padding-left: 78px; }
+  .sf-preview strong { color: var(--text); }
+  .sf-actions { display:flex; gap:8px; padding-left: 78px; }
+  .sf-hidden { display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">Bill<span>Wise</span></div>
+    <nav class="nav-group">
+      <a class="nav-link" href="dashboard.html"><span class="nav-dot"></span>Dashboard</a>
+      <a class="nav-link" href="invoices.html"><span class="nav-dot"></span>Invoices</a>
+      <a class="nav-link active" href="scheduled-jobs.html"><span class="nav-dot"></span>Scheduled Jobs</a>
+    </nav>
+    <div class="sidebar-foot">
+      Signed in as Admin<br>
+      <a href="#" id="logout-link" style="color:#e6b85c;">Sign out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <h1>Scheduled Jobs</h1>
+        <div class="subtitle">Enable, disable, and run reminder jobs</div>
+      </div>
+      <div class="topbar-right">
+        <div class="avatar">AD</div>
+      </div>
+    </header>
+
+    <div class="content" id="jobs-root">
+      <div class="table-empty">Loading jobs…</div>
+    </div>
+  </div>
+</div>
+
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  UI.requireAuth();
+  UI.wireLogout("#logout-link");
+
+  const root = document.getElementById("jobs-root");
+  const PERIOD_LABEL = { UPCOMING: "Upcoming reminder", DUE_TODAY: "Due-today reminder", OVERDUE: "Overdue reminder" };
+
+  function scheduleOf(job) {
+    return {
+      frequency: "DAILY",
+      hour: job.hour || 9,
+      minute: job.minute ?? 0,
+      meridiem: job.meridiem || "AM",
+    };
+  }
+
+  function buildCronLabel(s) {
+    const time = `${s.hour}:${String(s.minute).padStart(2, "0")} ${s.meridiem}`;
+    return `Daily at ${time}`;
+  }
+
+  function renderScheduleForm(job) {
+    const s = scheduleOf(job);
+    const hourOptions = Array.from({ length: 12 }, (_, i) => i + 1)
+      .map((h) => `<option value="${h}" ${h === s.hour ? "selected" : ""}>${h}</option>`).join("");
+    const minuteOptions = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+      .map((m) => `<option value="${m}" ${m === s.minute ? "selected" : ""}>${String(m).padStart(2, "0")}</option>`).join("");
+
+    return `
+      <div class="schedule-form" data-id="${job.id}">
+        <div class="sf-row">
+          <span class="sf-label">Time</span>
+          <div class="sf-control time-select-group">
+            <select class="hour-select">${hourOptions}</select>
+            <span>:</span>
+            <select class="minute-select">${minuteOptions}</select>
+            <select class="meridiem-select">
+              <option value="AM" ${s.meridiem === "AM" ? "selected" : ""}>AM</option>
+              <option value="PM" ${s.meridiem === "PM" ? "selected" : ""}>PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sf-preview">Runs: <strong class="preview-text">${UI.escapeHtml(buildCronLabel(s))}</strong></div>
+
+        <div class="sf-actions">
+          <button class="btn btn-primary btn-sm save-schedule-btn" data-id="${job.id}">Save schedule</button>
+          <button class="btn btn-ghost btn-sm cancel-schedule-btn" data-id="${job.id}">Cancel</button>
+        </div>
+      </div>
+    `;
+  }
+
+  async function renderJobs() {
+    const jobs = await window.BillWiseAPI.getJobs();
+    root.innerHTML = jobs.map((job) => `
+      <div class="job-card" data-job="${job.id}">
+        <div class="job-head">
+          <div class="job-title">
+            <label class="switch">
+              <input type="checkbox" class="toggle-input" data-id="${job.id}" ${job.enabled ? "checked" : ""} />
+              <span class="track"><span class="thumb"></span></span>
+            </label>
+            <div>
+              <h3>${UI.escapeHtml(job.name)}</h3>
+              <div class="job-meta">${job.enabled ? "Enabled" : "Disabled"} · ${UI.escapeHtml(job.cronLabel)}</div>
+            </div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-ghost btn-sm edit-schedule-btn" data-id="${job.id}">Edit schedule</button>
+            <button class="btn btn-primary btn-sm run-now-btn" data-id="${job.id}" ${job.enabled ? "" : "disabled"}>Run now</button>
+          </div>
+        </div>
+
+        <div class="job-body">
+          <div class="job-stat"><span class="label">Last run</span>${UI.formatDateTime(job.lastRunAt)}</div>
+          <div class="job-stat"><span class="label">Next run</span>${job.enabled ? UI.formatDateTime(job.nextRunAt) : "—"}</div>
+        </div>
+
+        <div class="edit-schedule-row hidden">
+          ${renderScheduleForm(job)}
+        </div>
+
+        <div class="job-history-toggle" data-id="${job.id}">View run history ▾</div>
+        <div class="job-history" data-id="${job.id}">
+          <table>
+            <thead><tr><th>Trigger</th><th>Started</th><th class="num">Found</th><th class="num">Sent</th><th class="num">Skipped</th><th class="num">Failed</th></tr></thead>
+            <tbody data-history-body="${job.id}"><tr><td colspan="6" class="table-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    `).join("");
+
+    wireCard();
+  }
+
+  function wireCard() {
+    document.querySelectorAll(".toggle-input").forEach((input) => {
+      input.addEventListener("change", async () => {
+        try {
+          await window.BillWiseAPI.toggleJob(input.dataset.id, input.checked);
+          UI.toast(`Job ${input.checked ? "enabled" : "disabled"}.`);
+          renderJobs();
+        } catch (err) {
+          UI.toast(err.message, "error");
+          input.checked = !input.checked;
+        }
+      });
+    });
+
+    document.querySelectorAll(".run-now-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => { console.log("executed run function");
+        btn.disabled = true;
+        btn.textContent = "Running…";
+        try {
+          console.log(btn.dataset.id);
+          const exec = await window.BillWiseAPI.runJobNow(btn.dataset.id);
+          console.log(exec);
+          UI.toast(`Run complete — found ${exec.found}, sent ${exec.succeeded}, skipped ${exec.skipped} (duplicate-blocked), failed ${exec.failed}.`);
+          renderJobs();
+        } catch (err) {
+          UI.toast(err.message, "error");
+          btn.disabled = false;
+          btn.textContent = "Run now";
+        }
+      });
+    });
+
+    document.querySelectorAll(".edit-schedule-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest(".job-card").querySelector(".edit-schedule-row");
+        row.classList.toggle("hidden");
+      });
+    });
+
+    document.querySelectorAll(".cancel-schedule-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        btn.closest(".edit-schedule-row").classList.add("hidden");
+      });
+    });
+
+    document.querySelectorAll(".month-day-select, .hour-select, .minute-select, .meridiem-select").forEach((el) => {
+      el.addEventListener("change", () => updatePreview(el.closest(".schedule-form")));
+    });
+
+    function readSchedule(form) {
+      return {
+        frequency: "DAILY",
+        hour: Number(form.querySelector(".hour-select").value),
+        minute: Number(form.querySelector(".minute-select").value),
+        meridiem: form.querySelector(".meridiem-select").value,
+      };
+    }
+
+    function updatePreview(form) {
+      const schedule = readSchedule(form);
+      form.querySelector(".preview-text").textContent = buildCronLabel(schedule);
+    }
+
+    document.querySelectorAll(".save-schedule-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const form = btn.closest(".schedule-form");
+        const schedule = readSchedule(form);
+        schedule.cronLabel = buildCronLabel(schedule);
+
+        btn.disabled = true;
+        btn.textContent = "Saving…";
+        try {
+          await window.BillWiseAPI.updateJobSchedule(btn.dataset.id, schedule);
+          UI.toast("Schedule updated.");
+          renderJobs();
+        } catch (err) {
+          UI.toast(err.message, "error");
+          btn.disabled = false;
+          btn.textContent = "Save schedule";
+        }
+      });
+    });
+
+    document.querySelectorAll(".job-history-toggle").forEach((toggle) => {
+      toggle.addEventListener("click", async () => {
+        const id = toggle.dataset.id;
+        
+        const historyEl = document.querySelector(`.job-history[data-id="${id}"]`);
+        const isOpen = historyEl.classList.toggle("open");
+        toggle.textContent = isOpen ? "Hide run history ▴" : "View run history ▾";
+        if (isOpen) {
+          const runs = await window.BillWiseAPI.getJobHistory(id);
+          const body = document.querySelector(`[data-history-body="${id}"]`);
+          body.innerHTML = runs.length === 0
+            ? `<tr><td colspan="6" class="table-empty">No runs recorded yet.</td></tr>`
+            : runs.map((r) => `
+                <tr>
+                  <td>${r.trigger }</td>
+                  <td class="text-muted">${UI.formatDateTime(r.startedAt)}</td>
+                  <td class="num">${r.found}</td>
+                  <td class="num">${r.succeeded}</td>
+                  <td class="num">${r.skipped}</td>
+                  <td class="num">${r.failed}</td>
+                </tr>
+              `).join("");
+        }
+      });
+    });
+  }
+
+  renderJobs();
+</script>
+</body>
+</html>

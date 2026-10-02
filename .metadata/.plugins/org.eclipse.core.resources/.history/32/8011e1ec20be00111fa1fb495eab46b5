@@ -1,0 +1,42 @@
+package com.app.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+import com.app.models.Invoice;
+import com.app.repository.Invoicejpa;
+@Service
+public class InvoiceServiceImpl implements InvoiceService {
+
+	@Autowired
+	private Invoicejpa dao;
+	
+	@Override
+	public Invoice addinvoice(Invoice invoice) {
+		return dao.save(invoice);
+	}	 
+	
+	@Override
+	public List<Invoice> getallInvoices() {
+		
+		return dao.findAll();
+	}
+	
+	@Override
+	public Invoice getInvoiceById(int id) {
+		
+		return dao.getInvoiceById(id);
+	}
+	
+	@Scheduled
+	public void UpdateInvoiceStatus() {
+		    List<Invoice> invoice =  dao.findAll();
+		    for (Invoice invoice2 : invoice) {
+				if(invoice2.getInvoice_due_date()>LocalDate)
+			}
+	}
+}

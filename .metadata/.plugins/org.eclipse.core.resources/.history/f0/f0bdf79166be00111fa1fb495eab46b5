@@ -1,0 +1,84 @@
+package com.app.controller;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.enums.InvoiceStatus;
+import com.app.models.Customer;
+import com.app.models.Invoice;
+import com.app.requestdto.Invoicestatusdto;
+import com.app.responsedto.Dashboardresponsedto;
+import com.app.responsedto.Invoicedto;
+import com.app.services.CustomerService;
+import com.app.services.InvoiceService;
+
+@RestController
+@RequestMapping("invoice")
+@CrossOrigin(origins = "http://localhost:5500",allowCredentials = "true")
+public class InvoiceController {
+	@Autowired
+ private InvoiceService service;
+	
+	@Autowired
+	private CustomerService cust_service;
+	
+	@PostMapping("add")
+	public Invoice addinvoice(@RequestBody com.app.requestdto.Invoicedto invoice) {
+		Invoice obj=new Invoice();
+	    Customer customer=cust_service.getcustomer(invoice.getCustomerId());	
+		obj.setCustomer(customer);
+		obj.setInvoice_amount(invoice.getAmount());
+		obj.setInvoice_date(invoice.getInvoiceDate());
+		obj.setInvoice_due_date(invoice.getDueDate());
+		obj.setInvoice_number(invoice.getNumber());
+		obj.setInvoice_status(invoice.getStatus());
+		obj.setDescription(invoice.getDescription());
+		obj.setCreated_at(Instant.now());
+	    
+		Invoice invoicefetched= service.addinvoice(obj);
+	    service.UpdateInvoiceStatus();
+	    
+		return invoicefetched;
+	}
+	
+	@PostMapping("markPaid/{id}")
+	public Invoicedto changestatus(@PathVariable int id) {
+		Invoice invoice=service.getInvoiceById(id);
+		invoice.setInvoice_status(InvoiceStatus.PAID);
+		invoice.setUpdated_at(Instant.now());
+		Invoice invoicefetched = service.addinvoice(invoice);
+		return mapToInvoiceDto(invoicefetched);
+		
+	}
+	
+	@PatchMapping("setStatus/{id}")
+	public Invoicedto updatestatus(@PathVariable int id,@RequestBody Invoicestatusdto status) {
+		    return service.updatestatus(id, status);
+	}
+	
+	public Invoicedto mapToInvoiceDto(Invoice invoice) {
+		Invoicedto dto=new Invoicedto();
+		dto.setId(invoice.getId());
+		dto.setInvoice_number(invoice.getInvoice_number());
+		dto.setInvoice_amount(invoice.getInvoice_amount());
+		dto.setInvoice_date(invoice.getInvoice_date());
+		dto.setInvoice_due_date(invoice.getInvoice_due_date());
+		dto.setInvoice_status(invoice.getInvoice_status());
+		dto.setDescription(invoice.getDescription());
+		dto.setCreated_at(invoice.getCreated_at());
+		dto.setUpdated_at(invoice.getUpdated_at());
+		dto.setCustomer(invoice.getCustomer());	
+		return dto;
+	}
+}

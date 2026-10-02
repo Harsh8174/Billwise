@@ -1,0 +1,20 @@
+package com.app.responsedto;
+
+import java.util.List;
+
+import com.app.models.Invoice;
+import com.app.models.JobExecution;
+import com.app.models.ReminderAttempt;
+import com.app.models.SchedulerJob;
+
+import lombok.Data;
+@Data
+public class Dashboardresponsedto {
+//      public int invoices;
+//      public List<SchedulerJob> job;
+//      public List<Jobexecutionresponse> jobs;
+	    public List<Invoice> inovice_list;
+	    public List<SchedulerJob> job_list;
+	    public List<JobExecution> execution_list;
+	    public List<ReminderAttempt> reminder_list;
+}

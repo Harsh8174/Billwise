@@ -1,8 +1,11 @@
 package com.app.services;
 
+import java.util.List;
+
 import com.app.models.Customer;
 
 public interface CustomerService {
-   public void addCustomer(Customer customer);
+   public Customer addCustomer(Customer customer);
    public Customer getcustomer(int id);
+   public List<Customer> getall();
 }

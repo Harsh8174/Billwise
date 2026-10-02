@@ -1,0 +1,8 @@
+package com.app.services;
+
+import com.app.models.Customer;
+
+public interface CustomerService {
+   public void addCustomer(Customer customer);
+   public Customer getcustomer(int id);
+}

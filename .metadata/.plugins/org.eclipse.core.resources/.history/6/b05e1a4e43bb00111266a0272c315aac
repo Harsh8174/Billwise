@@ -1,0 +1,10 @@
+package com.app.services;
+
+import java.util.List;
+
+import com.app.models.Invoice;
+
+public interface InvoiceService {
+   public void addinvoice(Invoice invoice);
+   public List<Invoice> getallInvoices();
+}

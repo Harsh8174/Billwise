@@ -1,7 +1,23 @@
 package com.app.services;
 
+import java.util.List;
+
 import com.app.models.Admin;
+import com.app.models.Invoice;
+import com.app.models.JobExecution;
+import com.app.models.SchedulerJob;
+import com.app.responsedto.Dashboardresponsedto;
+import com.app.responsedto.Invoicedto;
+import com.app.responsedto.Jobexecutionresponse;
+import com.app.responsedto.Scheduler_Job_dto;
 
 public interface AdminService {
    public Admin getadmin(Admin admin);
+   public Dashboardresponsedto sendresponse();
+   
+   //
+   public List<Jobexecutionresponse> mapToJobExecutionDto(List<JobExecution> jobs);
+   public List<Scheduler_Job_dto> mapTOScheduler_Job_DTo(List<SchedulerJob> job_list);
+   public List<Invoicedto> mapToInvoiceResponseDtoList(List<Invoice> invoice_list);
+
 }

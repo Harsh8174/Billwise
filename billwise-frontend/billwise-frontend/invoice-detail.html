@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invoice · BillWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  .back-link { display:inline-flex; align-items:center; gap:6px; color:var(--slate); text-decoration:none; font-size:13.5px; margin-bottom:14px; }
+  .back-link:hover { color: var(--ink); }
+  .detail-grid { display:grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items:start; }
+  .kv { display:grid; grid-template-columns: 140px 1fr; gap:10px 14px; padding: 18px 20px; font-size: 14px; }
+  .kv dt { color: var(--slate); }
+  .kv dd { margin:0; }
+  .status-control { padding: 18px 20px; border-top: 1px solid var(--line); }
+  .status-control label { display:block; font-size:12.5px; font-weight:600; color:var(--slate); margin-bottom:8px; }
+  .status-select-row { display:flex; gap:10px; }
+  @media (max-width: 900px) { .detail-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">Bill<span>Wise</span></div>
+    <nav class="nav-group">
+      <a class="nav-link" href="dashboard.html"><span class="nav-dot"></span>Dashboard</a>
+      <a class="nav-link active" href="invoices.html"><span class="nav-dot"></span>Invoices</a>
+      <a class="nav-link" href="scheduled-jobs.html"><span class="nav-dot"></span>Scheduled Jobs</a>
+    </nav>
+    <div class="sidebar-foot">
+      Signed in as Admin<br>
+      <a href="#" id="logout-link" style="color:#e6b85c;">Sign out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="page-title">Invoice</h1>
+        <div class="subtitle" id="page-subtitle">Loading…</div>
+      </div>
+      <div class="topbar-right">
+        <div class="avatar">AD</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <a class="back-link" href="invoices.html">← Back to invoices</a>
+
+      <div id="detail-root">
+        <div class="table-empty">Loading invoice…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Live backend: js/api.js talks to your Spring Boot REST API.
+     Swap to js/mock-api.js instead if you want the clickable offline demo. -->
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  UI.requireAuth();
+  UI.wireLogout("#logout-link");
+
+  const params = new URLSearchParams(window.location.search);
+  const invoiceId = params.get("id");
+  const root = document.getElementById("detail-root");
+
+  const STATUS_OPTIONS = ["NEW", "PENDING", "DUE", "OVERDUE", "PAID"];
+
+  async function load() {
+    const inv = await window.BillWiseAPI.getInvoice(invoiceId);
+    if (!inv) {
+      root.innerHTML = `<div class="table-empty"><strong>Invoice not found</strong>It may have been removed.</div>`;
+      return;
+    }
+
+    document.getElementById("page-title").textContent = inv.number;
+    document.getElementById("page-subtitle").textContent = `${inv.customerName} · ${UI.formatCurrency(inv.amount)}`;
+
+    const isPaid = inv.status === "PAID";
+
+    root.innerHTML = `
+      <div class="detail-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Invoice details</h2>
+            ${UI.statusPillHtml(inv.status)}
+          </div>
+          <dl class="kv">
+            <dt>Invoice number</dt><dd>${UI.escapeHtml(inv.number)}</dd>
+            <dt>Customer</dt><dd>${UI.escapeHtml(inv.customerName)}</dd>
+            <dt>Email</dt><dd>${UI.escapeHtml(inv.customerEmail)}</dd>
+            <dt>Invoice date</dt><dd>${UI.formatDate(inv.invoiceDate)}</dd>
+            <dt>Due date</dt><dd>${UI.dueDateLabel(inv)}</dd>
+            <dt>Amount</dt><dd><strong>${UI.formatCurrency(inv.amount)}</strong></dd>
+            <dt>Description</dt><dd>${inv.description ? UI.escapeHtml(inv.description) : '<span class="text-muted">—</span>'}</dd>
+            <dt>Created</dt><dd class="text-muted">${UI.formatDateTime(inv.createdAt)}</dd>
+            <dt>Last updated</dt><dd class="text-muted">${UI.formatDateTime(inv.updatedAt)}</dd>
+          </dl>
+
+          <div class="status-control">
+            <label for="status-select">Set status</label>
+            <div class="status-select-row">
+              <select id="status-select" ${isPaid ? "disabled" : ""} style="flex:1; padding:9px 12px; border:1px solid var(--line-strong); border-radius:6px; font-family:inherit; font-size:13.5px;">
+                ${STATUS_OPTIONS.map((s) => `<option value="${s}" ${s === inv.status ? "selected" : ""} ${s === "PAID" ? "disabled" : ""}>${s}</option>`).join("")}
+              </select>
+              <button class="btn btn-ghost btn-sm" id="apply-status-btn" ${isPaid ? "disabled" : ""}>Apply</button>
+            </div>
+            <p class="hint" style="margin-top:10px;">Setting OVERDUE is what pulls this invoice into the next overdue-reminder run.</p>
+
+            ${!isPaid ? `<button class="btn btn-primary" id="mark-paid-btn" style="margin-top:14px; width:100%; justify-content:center;">Mark as paid</button>` : `<div class="hint" style="margin-top:14px; background:var(--success-bg); color:var(--success); border-radius:6px; padding:10px 14px;">This invoice is settled — no further reminders will be sent.</div>`}
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Reminder history</h2></div>
+          ${inv.history.length === 0
+            ? `<div class="table-empty"><strong>No reminders sent yet</strong>This invoice hasn't been picked up by a job run.</div>`
+            : `<table>
+                <thead><tr><th>Period</th><th>Sent</th><th>Result</th></tr></thead>
+                <tbody>
+                  ${inv.history.map((h) => `
+                    <tr>
+                      <td>${h.period.replace("_", " ")}</td>
+                      
+                      <td class="text-muted">${UI.formatDate(h.attemptedAt)}</td>
+                      <td>${UI.statusPillHtml(h.status)}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>`
+          }
+        </div>
+      </div>
+    `;
+
+    document.getElementById("apply-status-btn")?.addEventListener("click", async () => {
+      const select = document.getElementById("status-select");
+      const btn = document.getElementById("apply-status-btn");
+      btn.disabled = true;
+      try {
+        await window.BillWiseAPI.setStatus(inv.id, select.value);
+        UI.toast(`Status updated to ${select.value}.`);
+        load();
+      } catch (err) {
+        UI.toast(err.message, "error");
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById("mark-paid-btn")?.addEventListener("click", async (e) => {
+      const btn = e.currentTarget;
+      btn.disabled = true;
+      btn.textContent = "Marking…";
+      try {
+        await window.BillWiseAPI.markPaid(inv.id);
+        UI.toast("Invoice marked as paid. Future reminders stopped.");
+        load();
+      } catch (err) {
+        UI.toast(err.message, "error");
+        btn.disabled = false;
+        btn.textContent = "Mark as paid";
+      }
+    });
+    const saved = await res.json();
+console.log("saved invoice:", saved);
+  }
+
+
+  load();
+</script>
+</body>
+</html>

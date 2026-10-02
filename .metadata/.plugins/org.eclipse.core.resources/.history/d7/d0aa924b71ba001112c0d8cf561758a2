@@ -1,0 +1,9 @@
+package com.app.services;
+
+import com.app.models.Admin;
+import com.app.responsedto.Dashboardresponsedto;
+
+public interface AdminService {
+   public Admin getadmin(Admin admin);
+   public Dashboardresponsedto sendresponse();
+}

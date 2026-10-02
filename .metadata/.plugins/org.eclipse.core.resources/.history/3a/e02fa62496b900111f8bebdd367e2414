@@ -1,0 +1,17 @@
+package com.app;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@SpringBootApplication
+@EnableScheduling
+@CrossOrigin(origins = "http://localhost:5500",allowCredentials = "true")
+public class BillwiseApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BillwiseApplication.class, args);
+	}
+
+}

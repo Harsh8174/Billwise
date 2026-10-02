@@ -1,0 +1,21 @@
+package com.app.requestdto;
+
+import java.time.LocalTime;
+
+import com.app.enums.Reminderperiod;
+
+import lombok.Data;
+
+@Data
+public class Schdulerdto {
+      private String frequency;
+      private LocalTime time;
+      private boolean enabled;
+      private Reminderperiod reminder_type;
+	  @Override
+	  public String toString() {
+		return "Schdulerdto [frequency=" + frequency + ", time=" + time + ", enabled=" + enabled + ", reminder_type="
+				+ reminder_type + "]";
+	  }
+      
+} 

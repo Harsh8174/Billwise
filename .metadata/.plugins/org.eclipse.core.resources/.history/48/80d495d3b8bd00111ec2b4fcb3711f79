@@ -1,0 +1,15 @@
+package com.app.responsedto;
+
+import java.time.LocalDateTime;
+
+import com.app.enums.Reminderperiod;
+
+public class SchedulerJobdto {
+    private int id;
+    private String job_name;
+    private String cron_expression;
+    private boolean enabled;
+    private Reminderperiod remindertype;
+    private LocalDateTime  LastRunAt;
+    private LocalDateTime nextRunAt;
+}

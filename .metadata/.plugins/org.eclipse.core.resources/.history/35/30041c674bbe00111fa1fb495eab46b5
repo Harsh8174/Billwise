@@ -1,0 +1,142 @@
+package com.app.services;
+
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.app.exceptionhandler.AdminLoginInvalidCredentials;
+import com.app.exceptionhandler.GlobalExceptionHandler;
+import com.app.models.Admin;
+import com.app.models.Invoice;
+import com.app.models.JobExecution;
+import com.app.models.ReminderAttempt;
+import com.app.models.SchedulerJob;
+import com.app.repository.Admindao;
+import com.app.repository.RemainderAttemptjpa;
+import com.app.responsedto.Dashboardresponsedto;
+import com.app.responsedto.Invoicedto;
+import com.app.responsedto.Jobexecutionresponse;
+import com.app.responsedto.Scheduler_Job_dto;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+   @Autowired
+	private Admindao dao;
+   
+
+	@Autowired
+	private InvoiceService invoiceservice;
+	
+	@Autowired
+	private JobExecutionService jobs_service;
+	 
+	@Autowired
+	private SchedulerService service_scheduler;
+	
+	@Autowired
+	private RemainderAttemptjpa dao_reminder;
+	@Override
+	public Admin getadmin(Admin admin) {
+		
+		return dao.getByUsernameAndPassword(admin.getUsername(), admin.getPassword()).orElseThrow(()->new AdminLoginInvalidCredentials("Invalid Credentials"));
+	}
+	
+	@Override
+		public Dashboardresponsedto sendresponse() {
+			Dashboardresponsedto obj=new Dashboardresponsedto();
+			     List<Invoice> invoice_list=invoiceservice.getallInvoices();
+			     List<Invoicedto> list_dto=mapToInvoiceResponseDtoList(invoice_list);
+			      
+			     List<SchedulerJob> job_list=service_scheduler.getallschedulerjob();
+			     
+			     
+			     obj.setJob_list(job_list);
+			     List<JobExecution> execution_list=jobs_service.getalljobs();
+			     obj.setExecution_list(execution_list);
+			     List<ReminderAttempt> reminder_list=dao_reminder.findAll();
+			     obj.setReminder_list(reminder_list);
+			     return obj;
+		}
+	
+	
+	
+	//mapping reminder attempt
+	
+	
+	
+	//Mapping to job execution
+    List<Jobexecutionresponse> mapToJobExecutionDto(List<JobExecution> jobs){
+		
+		List<Jobexecutionresponse> list=new ArrayList<>();
+		for (JobExecution jobExecution : jobs) {
+		     Jobexecutionresponse dto=new  Jobexecutionresponse();
+		     dto.setId(jobExecution.getId());
+		     dto.setTrigger(jobExecution.getTrigger());
+		     dto.setEnded_at(jobExecution.getEnded_at().atZone(ZoneId.systemDefault()).toLocalTime());
+		     dto.setStarted_at(jobExecution.getStarted_at().atZone(ZoneId.systemDefault()).toLocalTime());
+		     dto.setFound(jobExecution.getFound());
+		     dto.setSent(jobExecution.getSent());
+		     dto.setSkipped(jobExecution.getSkipped());
+		     dto.setFailed(jobExecution.getFailed());
+		     dto.setRemindertype(jobExecution.getScheduler().getRemindertype());
+		     dto.setScheduler_id(jobExecution.getScheduler().getId());
+		     dto.setSchduler_job_name(jobExecution.getScheduler().getJob_name());
+		     list.add(dto);
+		}
+		return list;
+	}
+	
+	
+	
+	//Mapping to Scheduler_Job dto
+	public List<Scheduler_Job_dto> mapTOScheduler_Job_DTo(List<Scheduler_Job_dto> job_list){
+	    List<Scheduler_Job_dto> list=new ArrayList<>();	
+		for (Scheduler_Job_dto scheduler_Job_dto : job_list) {
+			Scheduler_Job_dto dto=new Scheduler_Job_dto();
+			dto.setId(scheduler_Job_dto.getId());
+			dto.setJob_name(scheduler_Job_dto.getJob_name());
+			dto.setEnabled(scheduler_Job_dto.isEnabled());
+			dto.setCron_expression(scheduler_Job_dto.getCron_expression());
+			dto.setLastRunAt(scheduler_Job_dto.getLastRunAt());
+			dto.setNextRunAt(scheduler_Job_dto.getNextRunAt());
+			dto.setRemindertype(scheduler_Job_dto.getRemindertype());
+	         list.add(scheduler_Job_dto);
+		}
+		return list;
+	}
+	
+	
+	
+	
+	
+	
+	//Mapping to Invoice Response dto
+	@Override
+
+	public List<Invoicedto> mapToInvoiceResponseDtoList(List<Invoice> invoice_list) {
+		
+		List<Invoicedto> list=new ArrayList<Invoicedto>();
+		for (Invoice invoice : invoice_list) {
+			Invoicedto dto=new Invoicedto();
+			dto.setId(invoice.getId());
+			dto.setInvoice_number(invoice.getInvoice_number());
+			dto.setInvoice_amount(invoice.getInvoice_amount());
+			dto.setInvoice_date(invoice.getInvoice_date());
+			dto.setInvoice_due_date(invoice.getInvoice_due_date());
+			dto.setInvoice_status(invoice.getInvoice_status());
+			dto.setDescription(invoice.getDescription());
+			dto.setCreated_at(invoice.getCreated_at());
+			dto.setUpdated_at(invoice.getUpdated_at());
+			dto.setCustomer(invoice.getCustomer());			
+			list.add(dto);
+		}
+		return list;
+	}
+	
+
+}

@@ -1,0 +1,18 @@
+package com.app.repository;
+
+import java.time.Instant;
+import java.time.LocalDate;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.app.enums.Reminderperiod;
+import com.app.models.ReminderAttempt;
+
+public interface RemainderAttemptjpa extends JpaRepository<ReminderAttempt, Integer> {
+	boolean existsByInvoice_IdAndDateBetweenAndRemainderperiod(
+	        int invoiceId,
+	        Instant start,
+	        Instant end,
+	        Reminderperiod period
+	);
+}

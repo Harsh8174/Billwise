@@ -305,3 +305,133 @@
 2026-09-26 05:44:05.373: [INFO] BookmarksLoadDropped droppedNodes=0
 2026-09-26 05:44:05.373: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
 2026-09-26 06:23:22.411: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-26 09:29:01.869: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-26 09:29:01.869: [INFO] Profiles total count: 1
+2026-09-26 09:29:01.869: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-26 09:29:01.869: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-26 09:29:01.869: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-26 09:29:01.869: [INFO] OnDoneLoading sync enabled: 0
+2026-09-26 09:29:01.869: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-26 09:29:01.869: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-26 09:29:01.869: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-26 09:29:20.652: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-26 09:29:27.576: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-26 09:29:27.576: [INFO] Profiles total count: 1
+2026-09-26 09:29:27.576: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-26 09:29:27.576: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-26 09:29:27.576: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-26 09:29:27.576: [INFO] OnDoneLoading sync enabled: 0
+2026-09-26 09:29:27.576: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-26 09:29:27.576: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-26 09:29:27.576: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-26 17:50:09.594: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-27 02:33:45.711: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-27 02:33:45.711: [INFO] Profiles total count: 1
+2026-09-27 02:33:45.711: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-27 02:33:45.711: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-27 02:33:45.711: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-27 02:33:45.711: [INFO] OnDoneLoading sync enabled: 0
+2026-09-27 02:33:45.711: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-27 02:33:45.711: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-27 02:33:45.711: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-27 08:28:49.181: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-27 10:09:56.980: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-27 10:09:56.980: [INFO] Profiles total count: 1
+2026-09-27 10:09:56.980: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-27 10:09:56.980: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-27 10:09:56.980: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-27 10:09:56.980: [INFO] OnDoneLoading sync enabled: 0
+2026-09-27 10:09:56.980: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-27 10:09:56.980: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-27 10:09:56.980: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-27 16:27:25.836: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-28 12:36:30.254: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-28 12:36:30.254: [INFO] Profiles total count: 1
+2026-09-28 12:36:30.254: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-28 12:36:30.254: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-28 12:36:30.254: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-28 12:36:30.254: [INFO] OnDoneLoading sync enabled: 0
+2026-09-28 12:36:30.254: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-28 12:36:30.254: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-28 12:36:30.254: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-28 14:06:30.492: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-30 02:27:14.124: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-30 02:27:14.124: [INFO] Profiles total count: 1
+2026-09-30 02:27:14.124: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-30 02:27:14.124: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-09-30 02:27:14.124: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-09-30 02:27:14.124: [INFO] OnDoneLoading sync enabled: 0
+2026-09-30 02:27:14.124: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-30 02:27:14.124: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-30 02:27:14.124: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-30 13:39:11.964: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 14:23:40.389: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 14:23:40.389: [INFO] Profiles total count: 1
+2026-10-01 14:23:40.390: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 14:23:40.390: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 14:23:40.390: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 14:23:40.390: [INFO] OnDoneLoading sync enabled: 0
+2026-10-01 14:23:40.390: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-01 14:23:40.390: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-01 14:23:40.390: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:07:32.445: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:35:19.522: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:35:19.522: [INFO] Profiles total count: 1
+2026-10-01 15:35:19.522: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:35:19.522: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:35:19.522: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:35:19.522: [INFO] OnDoneLoading sync enabled: 0
+2026-10-01 15:35:19.522: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-01 15:35:19.522: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-01 15:35:19.522: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:35:19.816: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:35:53.454: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:35:53.454: [INFO] Profiles total count: 1
+2026-10-01 15:35:53.454: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:35:53.454: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:35:53.454: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:35:53.454: [INFO] OnDoneLoading sync enabled: 0
+2026-10-01 15:35:53.454: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-01 15:35:53.454: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-01 15:35:53.454: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:35:53.580: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:47:02.094: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:47:02.094: [INFO] Profiles total count: 1
+2026-10-01 15:47:02.094: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:47:02.094: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:47:02.094: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:47:02.094: [INFO] OnDoneLoading sync enabled: 0
+2026-10-01 15:47:02.094: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-01 15:47:02.094: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-01 15:47:02.094: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:47:02.247: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:49:05.418: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:49:05.418: [INFO] Profiles total count: 1
+2026-10-01 15:49:05.418: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:49:05.418: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:49:05.418: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:49:05.418: [INFO] OnDoneLoading sync enabled: 0
+2026-10-01 15:49:05.418: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-01 15:49:05.418: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-01 15:49:05.418: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:49:05.562: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 15:59:12.038: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:59:12.038: [INFO] Profiles total count: 1
+2026-10-01 15:59:12.038: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:59:12.038: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-01 15:59:12.038: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-01 15:59:12.038: [INFO] OnDoneLoading sync enabled: 0
+2026-10-01 15:59:12.038: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-01 15:59:12.038: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-01 15:59:12.038: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-01 17:33:44.910: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-02 02:33:56.035: [INFO] CurrentProfilePath: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-02 02:33:56.035: [INFO] Profiles total count: 1
+2026-10-02 02:33:56.036: [INFO] Profile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-02 02:33:56.036: [INFO] LastUsedProfileDir: F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-10-02 02:33:56.036: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Billwise_System\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-09-25T12:59:48.080Z
+2026-10-02 02:33:56.036: [INFO] OnDoneLoading sync enabled: 0
+2026-10-02 02:33:56.036: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-02 02:33:56.036: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-02 02:33:56.036: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-10-02 14:36:24.912: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1

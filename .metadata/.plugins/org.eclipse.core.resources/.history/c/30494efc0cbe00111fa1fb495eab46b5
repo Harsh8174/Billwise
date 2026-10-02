@@ -1,0 +1,15 @@
+package com.app.exceptionhandler;
+
+public class AdminLoginInvalidCredentials extends Exception{
+
+	private String message;
+	
+	    public AdminLoginInvalidCredentials(String message) {
+	          this.message=message;    	
+	    }
+
+		public String getMessage() {
+			return message;
+		}
+	    
+}

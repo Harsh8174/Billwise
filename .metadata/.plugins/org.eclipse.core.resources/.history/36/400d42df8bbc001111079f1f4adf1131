@@ -1,0 +1,14 @@
+package com.app.services;
+
+import java.util.List;
+
+import com.app.models.SchedulerJob;
+import com.app.requestdto.Schdulerdto;
+
+public interface SchedulerService {	
+   public void addscheduler(Schdulerdto dto);	
+   public void startscheduler();
+   public void automaticallysend(SchedulerJob SchedulerJob);
+   public List<SchedulerJob> getallschedulerjob();
+   public void enabletstatus(int id);
+}

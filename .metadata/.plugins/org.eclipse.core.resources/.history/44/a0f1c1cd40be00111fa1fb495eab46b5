@@ -1,0 +1,83 @@
+package com.app.services;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.app.exceptionhandler.AdminLoginInvalidCredentials;
+import com.app.exceptionhandler.GlobalExceptionHandler;
+import com.app.models.Admin;
+import com.app.models.Invoice;
+import com.app.models.JobExecution;
+import com.app.models.ReminderAttempt;
+import com.app.models.SchedulerJob;
+import com.app.repository.Admindao;
+import com.app.repository.RemainderAttemptjpa;
+import com.app.responsedto.Dashboardresponsedto;
+import com.app.responsedto.Invoicedto;
+import com.app.responsedto.Jobexecutionresponse;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+   @Autowired
+	private Admindao dao;
+   
+
+	@Autowired
+	private InvoiceService invoiceservice;
+	
+	@Autowired
+	private JobExecutionService jobs_service;
+	 
+	@Autowired
+	private SchedulerService service_scheduler;
+	
+	@Autowired
+	private RemainderAttemptjpa dao_reminder;
+	@Override
+	public Admin getadmin(Admin admin) {
+		
+		return dao.getByUsernameAndPassword(admin.getUsername(), admin.getPassword()).orElseThrow(()->new AdminLoginInvalidCredentials("Invalid Credentials"));
+	}
+
+//	public Dashboardresponsedto sendresponse() {
+//		Dashboardresponsedto obj=new Dashboardresponsedto();
+//		List<Invoice> list= invoiceservice.getallInvoices();
+//		obj.setInvoices(list.size());
+//		List<SchedulerJob> jobs=service_scheduler.getallschedulerjob();
+//		Jobexecutionresponse ob=new Jobexecutionresponse();
+//		List<Jobexecutionresponse> list2=new ArrayList<>();
+//		for (SchedulerJob schedulerJob : jobs) {
+//			 ob.setType(schedulerJob.getRemindertype());
+//		}
+//		return obj;
+//	}
+	
+	@Override
+		public Dashboardresponsedto sendresponse() {
+			Dashboardresponsedto obj=new Dashboardresponsedto();
+			     List<Invoice> invoice_list=invoiceservice.getallInvoices();
+			     obj.setInvoice_list(invoice_list);
+			     List<SchedulerJob> job_list=service_scheduler.getallschedulerjob();
+			     obj.setJob_list(job_list);
+			     List<JobExecution> execution_list=jobs_service.getalljobs();
+			     obj.setExecution_list(execution_list);
+			     List<ReminderAttempt> reminder_list=dao_reminder.findAll();
+			     obj.setReminder_list(reminder_list);
+			     return obj;
+		}
+	
+	List<Invoicedto> mapToInvoiceResponseDtoList(List<Invoice> invoice_list) {
+		Invoicedto dto=new Invoicedto();
+		List<Invoicedto> list=new ArrayList<Invoicedto>(); 
+		for (Invoice invoice : invoice_list) {
+			
+		}
+	}
+	
+
+}

@@ -1,0 +1,12 @@
+package com.app.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.app.enums.Reminderperiod;
+import com.app.models.SchedulerJob;
+
+public interface SchedulerJobs extends JpaRepository<SchedulerJob,Integer> {
+	public SchedulerJob getJobByRemindertype(Reminderperiod reminderType);
+    public SchedulerJob getJobById(int id);
+
+}

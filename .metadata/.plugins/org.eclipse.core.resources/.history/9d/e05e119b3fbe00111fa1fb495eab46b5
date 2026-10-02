@@ -1,0 +1,36 @@
+package com.app.responsedto;
+
+import java.time.Instant;
+import java.time.LocalDate;
+
+import com.app.enums.InvoiceStatus;
+import com.app.models.Customer;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
+public class Invoicedto {
+//	id: raw.id,
+//    number: raw.Invoice_number,
+//    customerId: raw.customer?.id ?? null,
+//    customerName: raw.customer?.name ?? "",
+//    customerEmail: raw.customer?.email ?? "",
+//    invoiceDate: raw.Invoice_date,
+//    dueDate: raw.Invoice_due_date,
+//    amount: raw.Invoice_amount,
+//    status: raw.invoice_status, // backend already sends OVERDUE/DUE/PENDING/PAID — matches pill classes as-is
+//    description: raw.description ?? "",
+//    createdAt: raw.created_at ?? null,
+//    updatedAt: raw.updated_at ?? null,..
+	
+	   private int id;
+	   private String Invoice_number;
+	   private LocalDate Invoice_date;
+	   private Instant created_at;
+	   private Instant updated_at;
+	   private LocalDate Invoice_due_date;
+	   private double Invoice_amount;
+	   private String description;
+	   private InvoiceStatus invoice_status;
+	   private Customer customer; 
+}

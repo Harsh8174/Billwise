@@ -1,0 +1,23 @@
+package com.app.requestdto;
+
+import java.time.Instant;
+import java.time.LocalTime;
+
+import com.app.enums.Reminderperiod;
+
+import lombok.Data;
+
+@Data
+public class Schdulerdto {
+	  private String Job_Name;
+      private String frequency;
+      private Instant time;
+      private boolean enabled;
+      private Reminderperiod reminder_type;
+	  @Override
+	  public String toString() {
+		return "Schdulerdto [Job_Name=" + Job_Name + ", frequency=" + frequency + ", time=" + time + ", enabled="
+				+ enabled + ", reminder_type=" + reminder_type + "]";
+	  }
+
+} 

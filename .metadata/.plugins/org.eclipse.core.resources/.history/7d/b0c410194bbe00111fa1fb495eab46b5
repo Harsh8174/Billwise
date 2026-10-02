@@ -1,0 +1,17 @@
+package com.app.services;
+
+import java.util.List;
+
+import com.app.models.Admin;
+import com.app.models.JobExecution;
+import com.app.responsedto.Dashboardresponsedto;
+import com.app.responsedto.Jobexecutionresponse;
+
+public interface AdminService {
+   public Admin getadmin(Admin admin);
+   public Dashboardresponsedto sendresponse();
+   
+   //
+   List<Jobexecutionresponse> mapToJobExecutionDto(List<JobExecution> jobs)
+
+}

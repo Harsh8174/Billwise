@@ -1,0 +1,34 @@
+package com.app.requestdto;
+
+import java.time.LocalDate;
+
+import com.app.enums.InvoiceStatus;
+import com.app.models.Invoice;
+
+import lombok.Data;
+@Data
+public class Invoicedto {
+	/*
+	 * number: document.getElementById("number").value.trim(),
+  amount: document.getElementById("amount").value,
+  customerId: selectedCustomer.id,
+  invoiceDate: document.getElementById("invoiceDate").value,
+  dueDate: document.getElementById("dueDate").value,
+  status: document.getElementById("status").value,
+  description: document.getElementById("description").value.trim(),
+	 *  */
+	  private String number;
+	  private double amount;
+	  private int customerId;
+	  private LocalDate invoiceDate;
+	  private LocalDate dueDate;
+	  private InvoiceStatus status;
+	  private String description;
+	  @Override
+	  public String toString() {
+		return "Invoicedto [number=" + number + ", amount=" + amount + ", customerId=" + customerId + ", invoiceDate="
+				+ invoiceDate + ", dueDate=" + dueDate + ", status=" + status + "]";
+	  }
+	  
+	  
+}

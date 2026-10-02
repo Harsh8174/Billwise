@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invoices · BillWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  .step-indicator { display:flex; align-items:center; gap:8px; padding: 14px 24px 0; font-size:12.5px; color: var(--slate); }
+  .step-indicator .step-dot { width:20px; height:20px; border-radius:50%; background:var(--line-strong); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+  .step-indicator .step-dot.active { background: var(--gold); color:#3a2b0c; }
+  .step-indicator .step-dot.done { background: var(--success); }
+  .step-indicator .step-line { width:24px; height:1px; background: var(--line-strong); }
+  .step-indicator .step-label { font-weight:600; }
+  .step-indicator .step-label.active { color: var(--text); }
+
+  .customer-toggle { display:flex; gap:8px; margin-bottom:18px; }
+  .customer-toggle button {
+    flex:1; padding:9px; border:1px solid var(--line-strong); border-radius:6px;
+    background: var(--surface); font-family:inherit; font-size:13px; font-weight:600;
+    color: var(--slate); cursor:pointer;
+  }
+  .customer-toggle button.active { background: var(--ink); border-color: var(--ink); color:#fff; }
+
+  .customer-summary {
+    display:flex; align-items:center; justify-content:space-between;
+    background: var(--paper); border:1px solid var(--line); border-radius:6px;
+    padding: 10px 14px; margin-bottom:18px; font-size:13px;
+  }
+  .customer-summary .name { font-weight:600; color: var(--text); }
+  .customer-summary .email { color: var(--slate); font-size:12px; }
+  .customer-summary button { background:none; border:none; color: var(--gold-ink); font-size:12.5px; font-weight:600; cursor:pointer; }
+
+  .modal-step { display:none; }
+  .modal-step.active { display:block; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">Bill<span>Wise</span></div>
+    <nav class="nav-group">
+      <a class="nav-link" href="dashboard.html"><span class="nav-dot"></span>Dashboard</a>
+      <a class="nav-link active" href="invoices.html"><span class="nav-dot"></span>Invoices</a>
+      <a class="nav-link" href="scheduled-jobs.html"><span class="nav-dot"></span>Scheduled Jobs</a>
+    </nav>
+    <div class="sidebar-foot">
+      Signed in as Admin<br>
+      <a href="#" id="logout-link" style="color:#e6b85c;">Sign out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <h1>Invoices</h1>
+        <div class="subtitle">Create, track, and filter every invoice</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" id="new-invoice-btn">+ New invoice</button>
+        <div class="avatar">AD</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="filter-bar">
+        <select id="status-filter">
+          <option value="ALL">All statuses</option>
+          <option value="NEW">New</option>
+          <option value="PENDING">Pending</option>
+          <option value="DUE">Due</option>
+          <option value="OVERDUE">Overdue</option>
+          <option value="PAID">Paid</option>
+        </select>
+        <input type="text" id="search-input" class="search-input" placeholder="Search by invoice # or customer…" />
+        <span class="badge-count" id="result-count">0 invoices</span>
+      </div>
+
+      <div class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Invoice</th>
+              <th>Customer</th>
+              <th>Due date</th>
+              <th class="num">Amount</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="invoices-body">
+            <tr><td colspan="6" class="table-empty">Loading invoices…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New invoice modal (2 steps: customer, then invoice) -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modal-title">New invoice</h2>
+      <button class="modal-close" id="modal-close">&times;</button>
+    </div>
+
+    <div class="step-indicator">
+      <div class="step-dot" id="dot-1">1</div>
+      <span class="step-label" id="label-1">Customer</span>
+      <div class="step-line"></div>
+      <div class="step-dot" id="dot-2">2</div>
+      <span class="step-label" id="label-2">Invoice details</span>
+    </div>
+
+    <!-- Step 1: Customer -->
+    <div class="modal-step active" id="step-customer">
+      <div class="modal-body">
+        <div class="customer-toggle">
+          <button type="button" class="tab-existing active" id="tab-existing">Existing customer</button>
+          <button type="button" class="tab-new" id="tab-new">New customer</button>
+        </div>
+
+        <div id="existing-customer-panel">
+          <div class="field" id="field-existingCustomer">
+            <label for="existingCustomer">Select customer</label>
+            <select id="existingCustomer">
+              <option value="">Loading customers…</option>
+            </select>
+            <div class="error-msg">Choose a customer, or switch to "New customer".</div>
+          </div>
+        </div>
+
+        <div id="new-customer-panel" class="hidden">
+          <div class="field" id="field-newCustomerName">
+            <label for="newCustomerName">Customer name</label>
+            <input type="text" id="newCustomerName" placeholder="Aarav Sharma" />
+            <div class="error-msg">Enter the customer's name.</div>
+          </div>
+          <div class="field" id="field-newCustomerEmail">
+            <label for="newCustomerEmail">Customer email</label>
+            <input type="email" id="newCustomerEmail" placeholder="aarav@example.com" />
+            <div class="error-msg">Enter a valid email — reminders are sent here.</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="modal-cancel-1">Cancel</button>
+        <button type="button" class="btn btn-primary" id="next-step-btn">Next: Invoice details →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Invoice -->
+    <div class="modal-step" id="step-invoice">
+      <form id="invoice-form">
+        <div class="modal-body">
+          <div class="customer-summary">
+            <div>
+              <div class="name" id="summary-name"></div>
+              <div class="email" id="summary-email"></div>
+            </div>
+            <button type="button" id="change-customer-btn">Change</button>
+          </div>
+
+          <div class="form-row">
+            <div class="field" id="field-number">
+              <label for="number">Invoice number</label>
+              <input type="text" id="number" placeholder="INV-1006" />
+              <div class="error-msg">Enter an invoice number.</div>
+            </div>
+            <div class="field" id="field-amount">
+              <label for="amount">Amount (₹)</label>
+              <input type="number" id="amount" min="0" step="1" placeholder="12500" />
+              <div class="error-msg">Enter a valid amount.</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field" id="field-invoiceDate">
+              <label for="invoiceDate">Invoice date</label>
+              <input type="date" id="invoiceDate" />
+              <div class="error-msg">Select the invoice date.</div>
+            </div>
+            <div class="field" id="field-dueDate">
+              <label for="dueDate">Due date</label>
+              <input type="date" id="dueDate" />
+              <div class="error-msg">Due date must be on or after the invoice date.</div>
+            </div>
+          </div>
+
+         <div class="field" id="field-status">
+  <label for="status">Status</label>
+  <select id="status">
+    <option value="NEW" selected>New</option>
+    <option value="PENDING">Pending</option>
+    <option value="DUE">Due</option>
+    <option value="OVERDUE">Overdue</option>
+    <option value="PAID">Paid</option>
+  </select>
+</div>
+
+<div class="field">
+            <label for="description">Description / reference (optional)</label>
+            <textarea id="description" rows="2" placeholder="e.g. Ceramic floor tiles — Batch 4"></textarea>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" id="back-step-btn">← Back</button>
+          <button type="submit" class="btn btn-primary" id="save-invoice-btn">Save invoice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Live backend: js/api.js talks to your Spring Boot REST API.
+     Swap to js/mock-api.js instead if you want the clickable offline demo. -->
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  UI.requireAuth();
+  UI.wireLogout("#logout-link");
+
+  const statusFilter = document.getElementById("status-filter");
+  const searchInput = document.getElementById("search-input");
+  const body = document.getElementById("invoices-body");
+  const resultCount = document.getElementById("result-count");
+
+  async function renderList() {
+    const invoices = await window.BillWiseAPI.getInvoices({
+      status: statusFilter.value,
+      search: searchInput.value,
+    });
+    resultCount.textContent = `${invoices.length} invoice${invoices.length === 1 ? "" : "s"}`;
+
+    if (invoices.length === 0) {
+      body.innerHTML = `<tr><td colspan="6" class="table-empty"><strong>No invoices match this filter</strong>Try a different status or search term.</td></tr>`;
+      return;
+    }
+
+    body.innerHTML = invoices.map((inv) => `
+      <tr class="row-link" data-id="${inv.id}">
+        <td><strong>${UI.escapeHtml(inv.number)}</strong></td>
+        <td>${UI.escapeHtml(inv.customerName)}</td>
+        <td>${UI.dueDateLabel(inv)}</td>
+        <td class="num amount">${UI.formatCurrency(inv.amount)}</td>
+        <td>${UI.statusPillHtml(inv.status)}</td>
+        <td style="text-align:right;">
+          ${inv.status !== "PAID" ? `<button class="btn btn-sm btn-ghost mark-paid-btn" data-id="${inv.id}">Mark paid</button>` : `<span class="text-muted" style="font-size:12.5px;">Settled</span>`}
+        </td>
+      </tr>
+    `).join("");
+
+    body.querySelectorAll(".row-link").forEach((row) => {
+      row.addEventListener("click", (e) => {
+        if (e.target.closest(".mark-paid-btn")) return;
+        window.location.href = `invoice-detail.html?id=${row.dataset.id}`;
+      });
+    });
+
+    body.querySelectorAll(".mark-paid-btn").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        btn.disabled = true;
+        btn.textContent = "Marking…";
+        try {
+          await window.BillWiseAPI.markPaid(btn.dataset.id);
+          UI.toast("Invoice marked as paid. Future reminders stopped.");
+          renderList();
+        } catch (err) {
+          UI.toast(err.message, "error");
+          btn.disabled = false;
+          btn.textContent = "Mark paid";
+        }
+      });
+    });
+  }
+
+  statusFilter.addEventListener("change", renderList);
+  let searchTimer;
+  searchInput.addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(renderList, 200);
+  });
+
+  renderList();
+
+  /* ---------------- New invoice modal (2 steps) ---------------- */
+  const overlay = document.getElementById("modal-overlay");
+  const form = document.getElementById("invoice-form");
+  const saveBtn = document.getElementById("save-invoice-btn");
+
+  let selectedCustomer = null; // { id, name, email }
+  let customersCache = [];
+
+  function setStep(step) {
+    document.getElementById("step-customer").classList.toggle("active", step === 1);
+    document.getElementById("step-invoice").classList.toggle("active", step === 2);
+    document.getElementById("dot-1").classList.toggle("active", step === 1);
+    document.getElementById("dot-1").classList.toggle("done", step === 2);
+    document.getElementById("dot-2").classList.toggle("active", step === 2);
+    document.getElementById("label-1").classList.toggle("active", step === 1);
+    document.getElementById("label-2").classList.toggle("active", step === 2);
+    if (step === 1) { document.getElementById("dot-1").textContent = "1"; }
+    else { document.getElementById("dot-1").textContent = "✓"; }
+  }
+
+  async function openModal() {
+    selectedCustomer = null;
+    form.reset();
+    document.getElementById("invoiceDate").value = window.BillWiseAPI.TODAY_ISO;
+    document.querySelectorAll(".field").forEach((f) => f.classList.remove("has-error"));
+    setCustomerTab("existing");
+    setStep(1);
+    overlay.classList.remove("hidden");
+
+    const select = document.getElementById("existingCustomer");
+    select.innerHTML = `<option value="">Loading customers…</option>`;
+    try {
+      customersCache = await window.BillWiseAPI.getCustomers();
+      select.innerHTML = customersCache.length
+        ? `<option value="">Select a customer…</option>` + customersCache.map((c) => `<option value="${c.id}">${UI.escapeHtml(c.name)} — ${UI.escapeHtml(c.email)}</option>`).join("")
+        : `<option value="">No existing customers yet</option>`;
+      if (customersCache.length === 0) setCustomerTab("new");
+    } catch (err) {
+      select.innerHTML = `<option value="">Couldn't load customers</option>`;
+    }
+  }
+  function closeModal() { overlay.classList.add("hidden"); }
+
+  function setCustomerTab(which) {
+    document.getElementById("tab-existing").classList.toggle("active", which === "existing");
+    document.getElementById("tab-new").classList.toggle("active", which === "new");
+    document.getElementById("existing-customer-panel").classList.toggle("hidden", which !== "existing");
+    document.getElementById("new-customer-panel").classList.toggle("hidden", which !== "new");
+  }
+
+  document.getElementById("new-invoice-btn").addEventListener("click", openModal);
+  document.getElementById("modal-close").addEventListener("click", closeModal);
+  document.getElementById("modal-cancel-1").addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
+
+  document.getElementById("tab-existing").addEventListener("click", () => setCustomerTab("existing"));
+  document.getElementById("tab-new").addEventListener("click", () => setCustomerTab("new"));
+
+  function setErr(id, hasError) {
+    document.getElementById(id).classList.toggle("has-error", hasError);
+  }
+
+  document.getElementById("next-step-btn").addEventListener("click", async () => {
+    const usingExisting = document.getElementById("tab-existing").classList.contains("active");
+    const nextBtn = document.getElementById("next-step-btn");
+
+    if (usingExisting) {
+      const select = document.getElementById("existingCustomer");
+      const id = select.value;
+      setErr("field-existingCustomer", !id);
+      if (!id) return;
+      const customer = customersCache.find((c) => String(c.id) === id);
+      selectedCustomer = customer;
+    } else {
+      const name = document.getElementById("newCustomerName").value.trim();
+      const email = document.getElementById("newCustomerEmail").value.trim();
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      setErr("field-newCustomerName", !name);
+      setErr("field-newCustomerEmail", !emailOk);
+      if (!name || !emailOk) return;
+
+      nextBtn.disabled = true;
+      nextBtn.textContent = "Creating customer…";
+      try {
+        selectedCustomer = await window.BillWiseAPI.createCustomer({ name, email });
+      } catch (err) {
+        UI.toast(err.message, "error");
+        nextBtn.disabled = false;
+        nextBtn.textContent = "Next: Invoice details →";
+        return;
+      }
+      nextBtn.disabled = false;
+      nextBtn.textContent = "Next: Invoice details →";
+    }
+
+    document.getElementById("summary-name").textContent = selectedCustomer.name;
+    document.getElementById("summary-email").textContent = selectedCustomer.email;
+    setStep(2);
+    document.getElementById("number").focus();
+  });
+
+  document.getElementById("change-customer-btn").addEventListener("click", () => setStep(1));
+  document.getElementById("back-step-btn").addEventListener("click", () => setStep(1));
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!selectedCustomer) { setStep(1); return; }
+//
+   const values = {
+  number: document.getElementById("number").value.trim(),
+  amount: document.getElementById("amount").value,
+  customerId: selectedCustomer.id,
+  invoiceDate: document.getElementById("invoiceDate").value,
+  dueDate: document.getElementById("dueDate").value,
+  status: document.getElementById("status").value,
+  description: document.getElementById("description").value.trim(),
+};
+    const dateOk = values.invoiceDate && values.dueDate && values.dueDate >= values.invoiceDate;
+
+    let hasError = false;
+    setErr("field-number", !values.number); if (!values.number) hasError = true;
+    setErr("field-amount", !(Number(values.amount) > 0)); if (!(Number(values.amount) > 0)) hasError = true;
+    setErr("field-invoiceDate", !values.invoiceDate); if (!values.invoiceDate) hasError = true;
+    setErr("field-dueDate", !dateOk); if (!dateOk) hasError = true;
+    if (hasError) return;
+
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving…";
+    try {
+      await window.BillWiseAPI.createInvoice(values);
+      closeModal();
+      UI.toast(`Invoice ${values.number} created for ${selectedCustomer.name}.`);
+      renderList();
+    } catch (err) {
+      UI.toast(err.message, "error");
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = "Save invoice";
+    }
+  });
+</script>
+</body>
+</html>

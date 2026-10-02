@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign in · BillWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="login-screen">
+  <div class="login-visual">
+    <div class="brand">Bill<span>Wise</span></div>
+    <h1>Every invoice tracked. Every reminder sent once, right on time.</h1>
+    <p>BillWise watches due dates so you don't have to — upcoming, due-today, and overdue reminders go out automatically, and a reminder is never sent twice for the same invoice.</p>
+    <div class="quote">"Marking an invoice OVERDUE is what pulls it into tonight's reminder run — you stay in control, the schedule does the rest."</div>
+  </div>
+
+  <div class="login-form-side">
+    <div class="login-card">
+      <h2>Admin sign in</h2>
+      <p class="sub">Manage invoices and reminder schedules.</p>
+
+      <div class="login-error" id="login-error"></div>
+
+      <form id="login-form" novalidate>
+        <div class="field" id="field-username">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" autocomplete="username" placeholder="admin" />
+          <div class="error-msg">Enter your username.</div>
+        </div>
+        <div class="field" id="field-password">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" />
+          <div class="error-msg">Enter your password.</div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit-btn">Sign in</button>
+      </form>
+
+      <div class="login-hint">
+        Seeded demo account — <code>admin</code> / <code>admin123</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Live backend: js/api.js talks to your Spring Boot REST API.
+     Swap to js/mock-api.js instead if you want the clickable offline demo. -->
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  // If already signed in, skip straight to the dashboard.
+  if (window.BillWiseAPI.isAuthed()) window.location.href = "dashboard.html";
+
+  const form = document.getElementById("login-form");
+  const errorBox = document.getElementById("login-error");
+  const submitBtn = document.getElementById("submit-btn");
+
+  function setFieldError(id, hasError) {
+    document.getElementById(id).classList.toggle("has-error", hasError);
+    document.querySelector(`#${id} input`).classList.toggle("field-error", hasError);
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    setFieldError("field-username", !username);
+    setFieldError("field-password", !password);
+    if (!username || !password) return;
+
+    errorBox.style.display = "none";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Signing in…";
+
+    const result = await window.BillWiseAPI.login(username, password);
+
+    if (result.ok) {
+      window.location.href = "dashboard.html";
+    } else {
+      errorBox.textContent = result.error;
+      errorBox.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Sign in";
+    }
+  });
+</script>
+</body>
+</html>

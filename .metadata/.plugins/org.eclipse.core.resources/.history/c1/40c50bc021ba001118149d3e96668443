@@ -1,0 +1,11 @@
+package com.app.models;
+
+public class JobExecution {
+	
+   private int id;
+   private int found;
+   private int sent;
+   private int failed;
+   private int skipped;
+   private SchedulerJob scheduler;
+}

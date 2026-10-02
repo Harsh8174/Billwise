@@ -1,0 +1,7 @@
+package com.app.responsedto;
+
+public class Customerdto {
+         int id;
+         String name;
+         String email;
+}

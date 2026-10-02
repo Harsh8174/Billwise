@@ -1,0 +1,16 @@
+package com.app.responsedto;
+
+import java.time.LocalTime;
+
+import com.app.enums.Reminderperiod;
+
+public class Jobexecutionresponse {
+	   private int id;
+	   private int found;
+	   private int sent;
+	   private int failed;
+	   private int skipped;
+	   private LocalTime started_at;
+	   private LocalTime ended_at;
+	   private Reminderperiod type;
+}

@@ -1,0 +1,22 @@
+package com.app.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.repository.SchedulerJobs;
+import com.app.requestdto.Schdulerdto;
+import com.app.services.SchedulerService;
+
+@RestController
+@RequestMapping("schedule")
+public class SchedulerController {
+	@Autowired
+private	SchedulerService service;
+	    @PostMapping("configure")
+        public void addschedule(@RequestBody Schdulerdto dto) {
+        	service.addscheduler(dto);
+        }            
+}

@@ -2,6 +2,9 @@ package com.app.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,5 +24,6 @@ public class Customer {
   
 
   @OneToMany(cascade = CascadeType.ALL,mappedBy = "customer")
+  @JsonIgnore
   private List<Invoice> invoice;
 }

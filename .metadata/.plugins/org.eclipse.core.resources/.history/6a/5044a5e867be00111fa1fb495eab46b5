@@ -1,0 +1,5 @@
+create table admin(
+	id int PRIMARY KEY  GENERATED ALWAYS AS IDENTITY,
+	username varchar(255) NOT NULL,
+	password varchar(255) NOT NULL
+);

@@ -1,0 +1,9 @@
+package com.app.requestdto;
+
+import java.time.LocalTime;
+
+public class Schdulerdto {
+      private String frequency;
+      private LocalTime time;
+      private boolean enabled;
+} 
