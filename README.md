@@ -172,6 +172,23 @@ billwise-frontend
 
 ---
 
+# 🔗 API Endpoints
+
+| Method | Endpoint                  | Description                   |
+| ------ | ------------------------- | ----------------------------- |
+| POST   | `/admin/login`            | Admin login                   |
+| GET    | `/admin/dashboard`        | Get dashboard data            |
+| GET    | `/customer/get/all`       | Get all customers             |
+| POST   | `/customer/add`           | Add customer                  |
+| POST   | `/invoice/add`            | Add invoice                   |
+| PATCH  | `/invoice/setStatus/{id}` | Update invoice status         |
+| POST   | `/invoice/markPaid/{id}`  | Mark invoice as paid          |
+| POST   | `/schedule/add`           | Add scheduler job             |
+| PATCH  | `/schedule/enable/{id}`   | Enable/disable scheduler job  |
+| PATCH  | `/schedule/job/{id}`      | Update scheduler job time     |
+| POST   | `/schedule/runNow/{id}`   | Run scheduler job immediately |
+
+
 # ⚙️ Prerequisites
 
 Install the following before running BillWise:
