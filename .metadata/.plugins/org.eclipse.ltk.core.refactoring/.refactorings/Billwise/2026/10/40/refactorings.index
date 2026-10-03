@@ -18,3 +18,10 @@
 1790949977427	Rename resource 'V3__Create_Scheduler_Job_Tables.sql'
 1790950125012	Rename resource 'V2__Insert_Admin'
 1790950144160	Rename resource 'V3__Create_Scheduler_Job_Tables'
+1790998123657	Rename package 'com.example.demo'
+1791002554166	Delete element
+1791002631073	Delete element
+1791002678580	Delete element
+1791005572772	Rename package 'com.app.schedulerImpltest'
+1791005746489	Delete element
+1791006038500	Rename compilation unit 'Scheduler_testin.java'

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="SchedulerServiceImplTest" project="Billwise" tests="1" started="1" failures="0" errors="1" ignored="0">
+  <testsuite name="com.app.scheduler_test.SchedulerServiceImplTest" time="1.382" displayname="SchedulerServiceImplTest" uniqueid="[engine:junit-jupiter]/[class:com.app.scheduler_test.SchedulerServiceImplTest]">
+    <testcase name="testUpcomingInvoiceReminder" classname="com.app.scheduler_test.SchedulerServiceImplTest" time="1.382" displayname="testUpcomingInvoiceReminder()" uniqueid="[engine:junit-jupiter]/[class:com.app.scheduler_test.SchedulerServiceImplTest]/[method:testUpcomingInvoiceReminder()]">
+      <error>java.lang.NullPointerException: Cannot invoke "com.app.repository.Invoicejpa.findAll()" because "this.dao" is null&#13;
+	at com.app.services.SchedulerServiceImpl.automaticallysend(SchedulerServiceImpl.java:183)&#13;
+	at com.app.scheduler_test.SchedulerServiceImplTest.testUpcomingInvoiceReminder(SchedulerServiceImplTest.java:103)&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>

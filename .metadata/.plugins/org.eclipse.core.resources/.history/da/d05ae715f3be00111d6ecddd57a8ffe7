@@ -1,0 +1,148 @@
+package com.app.scheduler_test;
+
+
+
+	import static org.mockito.ArgumentMatchers.any;
+	import static org.mockito.Mockito.*;
+
+import java.time.Instant;
+import java.time.LocalDate;
+	import java.util.List;
+
+	import org.junit.jupiter.api.BeforeEach;
+	import org.junit.jupiter.api.Test;
+	import org.mockito.InjectMocks;
+	import org.mockito.Mock;
+	import org.mockito.MockitoAnnotations;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import com.app.controller.InvoiceController;
+import com.app.enums.InvoiceStatus;
+import com.app.enums.JobTrigger;
+import com.app.enums.Reminderperiod;
+import com.app.models.Customer;
+import com.app.models.Invoice;
+	import com.app.models.JobExecution;
+	import com.app.models.SchedulerJob;
+	import com.app.repository.Invoicejpa;
+	import com.app.repository.JobExecutionJpa;
+	import com.app.repository.RemainderAttemptjpa;
+	import com.app.repository.SchedulerJobs;
+import com.app.services.JobExeutionServiceImpl;
+import com.app.services.NotificationserviceImpl;
+import com.app.services.NotificatonService;
+import com.app.services.SchedulerServiceImpl;
+
+ 
+	class SchedulerServiceImplTest {
+
+	    @Mock
+	    private Invoicejpa dao;
+
+	    @Mock
+	    private RemainderAttemptjpa attempt;
+
+	    @Mock
+	    private NotificatonService service;
+
+	    @Mock
+	    private SchedulerJobs schedulerdao;
+
+	    @Mock
+	    private JobExecutionJpa dao_jpa;
+
+	    @Mock
+	    private NotificationserviceImpl notificationserviceImpl;
+
+	    @Mock
+	    private InvoiceController invoiceController;
+
+	    @Mock
+	    private JobExeutionServiceImpl jobExeutionServiceImpl;
+
+	    @InjectMocks
+	    private SchedulerServiceImpl schedulerService;
+
+	    @BeforeEach
+	    void setUp() {
+	        MockitoAnnotations.openMocks(this);
+	        
+	        ReflectionTestUtils.setField(schedulerService, "dao", dao);
+	        ReflectionTestUtils.setField(schedulerService, "attempt", attempt);
+	        ReflectionTestUtils.setField(schedulerService, "service", service);
+	        ReflectionTestUtils.setField(schedulerService, "schedulerdao", schedulerdao);
+	        ReflectionTestUtils.setField(schedulerService, "dao_jpa", dao_jpa);
+	    }
+	    
+	    @Test
+	    void testUpcomingInvoiceReminder() {
+
+	        System.out.println("===== TEST STARTED =====");
+
+	        // Arrange
+
+	        Customer customer = new Customer();
+	        customer.setName("Peter Parker");
+	        customer.setEmail("peter@gmail.com");
+
+	        Invoice invoice = new Invoice();
+
+	        invoice.setId(1);
+	        invoice.setInvoice_number("INV-101");
+	        invoice.setInvoice_date(LocalDate.now().minusDays(4));
+	        invoice.setInvoice_due_date(LocalDate.now().plusDays(2));
+	        invoice.setInvoice_status(InvoiceStatus.NEW);
+	        invoice.setCustomer(customer);
+
+
+	        SchedulerJob schedulerJob = new SchedulerJob();
+
+	        schedulerJob.setId(1);
+	        schedulerJob.setJob_name("Upcoming Reminder");
+	        schedulerJob.setRemindertype(Reminderperiod.Upcoming);
+	        schedulerJob.setCron_expression("0 0 10 * * *");
+
+
+	        JobExecution job = new JobExecution();
+	        job.setTrigger(JobTrigger.Runnow);
+
+
+	        when(dao.findAll())
+	                .thenReturn(List.of(invoice));
+
+
+	        when(attempt.existsByInvoice_IdAndDateAndRemainderperiod(
+	                eq(1),
+	                eq(LocalDate.now()),
+	                eq(Reminderperiod.Upcoming)))
+	                .thenReturn(false);
+
+	        doReturn(List.of(invoice)).when(dao).findAll();
+	       
+	        System.out.println("DAO MOCK = " + dao);
+	        System.out.println("DAO FIND ALL TEST = " + dao.findAll());
+	        System.out.println("===== CALLING SERVICE =====");
+
+	        schedulerService.automaticallysend(schedulerJob, job);
+
+	       
+	        // Assert
+           verify(service).sendmail(eq("peter@gmail.com"),eq("Invoice Reminder"),any());
+
+	        verify(attempt).save(any());
+
+	        verify(dao_jpa).save(any());
+
+	        verify(schedulerdao).save(any());
+
+
+	        ReflectionTestUtils.setField(schedulerService, "dao", dao);
+	        ReflectionTestUtils.setField(schedulerService, "attempt", attempt);
+	        ReflectionTestUtils.setField(schedulerService, "service", service);
+	        ReflectionTestUtils.setField(schedulerService, "schedulerdao", schedulerdao);
+	        ReflectionTestUtils.setField(schedulerService, "dao_jpa", dao_jpa);
+	    }
+	}
+

@@ -41,9 +41,9 @@ public class AdminController {
      }
 	
 	@GetMapping("dashboard")
-	public Dashboardresponsedto sendresponse() {
+	public ResponseEntity<Dashboardresponsedto> sendresponse() {
 		
-		return service.sendresponse();
+		return ResponseEntity.ok(service.sendresponse());
 	}
 	
 }

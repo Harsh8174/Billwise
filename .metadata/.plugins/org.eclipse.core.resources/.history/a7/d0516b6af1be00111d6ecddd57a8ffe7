@@ -1,0 +1,287 @@
+package com.app.services;
+
+import com.app.controller.InvoiceController;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.TriggerContext;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.scheduling.support.SimpleTriggerContext;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.app.enums.InvoiceStatus;
+import com.app.enums.JobTrigger;
+import com.app.enums.Reminderperiod;
+import com.app.models.Invoice;
+import com.app.models.JobExecution;
+import com.app.models.ReminderAttempt;
+import com.app.models.SchedulerJob;
+import com.app.repository.Invoicejpa;
+import com.app.repository.JobExecutionJpa;
+import com.app.repository.RemainderAttemptjpa;
+import com.app.repository.SchedulerJobs;
+import com.app.requestdto.Schdulerdto;
+import com.app.responsedto.Jobexecutionresponse;
+
+import jakarta.annotation.PostConstruct;
+
+@Service
+public class SchedulerServiceImpl implements SchedulerService {
+
+	
+	private final JobExeutionServiceImpl jobExeutionServiceImpl;
+
+	private final Map<Integer, ScheduledFuture<?>> runningTasks ;
+
+	private final InvoiceController invoiceController;
+
+	private final NotificationserviceImpl notificationserviceImpl;
+
+	@Autowired
+	private Invoicejpa dao;
+	
+	@Autowired
+	private RemainderAttemptjpa attempt;
+	
+	@Autowired
+	private NotificatonService service;
+	
+	@Autowired
+	private SchedulerJobs schedulerdao;
+	
+	@Autowired
+    private TaskScheduler taskscheduler;
+	
+    @Autowired 
+	private JobExecutionJpa dao_jpa;
+
+	SchedulerServiceImpl(NotificationserviceImpl notificationserviceImpl, InvoiceController invoiceController, JobExeutionServiceImpl jobExeutionServiceImpl) {
+		this.notificationserviceImpl = notificationserviceImpl;
+		this.invoiceController = invoiceController;
+		this.runningTasks=new ConcurrentHashMap<>();
+		this.jobExeutionServiceImpl = jobExeutionServiceImpl;
+	}
+	//for next run 
+	private LocalDateTime computeNextRunAt(String cronExpression) {
+	    CronTrigger trigger = new CronTrigger(cronExpression);
+	    TriggerContext context = new SimpleTriggerContext(); // empty = "starting from now"
+	    Instant next = trigger.nextExecution(context);
+	    return next == null ? null : LocalDateTime.ofInstant(next, ZoneId.systemDefault());
+	}
+	
+	
+	@Override
+	public void addscheduler(Schdulerdto dto) {
+		String job_name=dto.getJob_Name();
+	    String frequency = dto.getFrequency();
+	    LocalTime time=dto.getTime();
+	    boolean enabled =dto.isEnabled();
+	    String cron_expression=null;
+	    if(frequency.equalsIgnoreCase("daily"))
+	    {
+	    	cron_expression = time.getSecond() +" "+time.getMinute()+" "+  time.getHour()+" * * *";
+	    	//cron_expression = time.getSecond()+" * * * * *";
+	    }
+	    
+		SchedulerJob obj=schedulerdao.getJobByRemindertype(dto.getReminder_type());
+		if(obj==null) {
+		obj=new SchedulerJob();	
+		obj.setJob_name(job_name);
+		obj.setCron_expression(cron_expression);
+		obj.setEnabled(enabled);
+		obj.setRemindertype(dto.getReminder_type());
+		schedulerdao.save(obj);
+		rescheduleJob(obj);
+		}
+		else {	
+			obj.setCron_expression(cron_expression);
+			obj.setEnabled(enabled);
+			obj.setRemindertype(dto.getReminder_type());
+			schedulerdao.save(obj);
+			rescheduleJob(obj);
+		}
+	}
+	
+	private void rescheduleJob(SchedulerJob schedulerJob) {
+	
+		// 1. If a task is already running for this job's id, cancel it first
+	    ScheduledFuture<?> existing = runningTasks.get(schedulerJob.getId());
+	    if (existing != null) {
+	    	System.out.println("existing");
+	        existing.cancel(false); // false = let it finish if mid-run, just don't fire again
+	        runningTasks.remove(schedulerJob.getId());
+	    }
+
+	    // 2. Only start a new one if it's actually enabled
+	    if (schedulerJob.isEnabled()) {
+	    	
+	    	System.out.println("existing two called");
+	    	JobExecution job=new JobExecution();
+	    	job.setTrigger(JobTrigger.Scheduled);
+	        ScheduledFuture<?> future = taskscheduler.schedule(
+	        		() -> automaticallysend(schedulerJob,job),
+	            new CronTrigger(schedulerJob.getCron_expression())
+	        );
+	        runningTasks.put(schedulerJob.getId(), future);
+	        schedulerJob.setNextRunAt(computeNextRunAt(schedulerJob.getCron_expression()));
+	        schedulerdao.save(schedulerJob);
+	    }
+	}
+
+	@PostConstruct
+	  public void startscheduler() {
+		  List<SchedulerJob> job = schedulerdao.findAll();
+		  for (SchedulerJob schedulerJob : job) {
+			  System.out.println("Enabled :"+schedulerJob.isEnabled());
+			  if(schedulerJob!=null && schedulerJob.isEnabled()) {
+				  System.out.println(schedulerJob.getId());
+		          System.out.println(schedulerJob.getCron_expression());
+		          rescheduleJob(schedulerJob);		         
+			  }
+		}
+		  
+	  }
+
+        public Jobexecutionresponse RunNow(int id) {
+        	SchedulerJob job=schedulerdao.getJobById(id);
+        	JobExecution job_execut=new JobExecution();
+        	job_execut.setTrigger(JobTrigger.Runnow);
+        	
+        	automaticallysend(job,job_execut); 
+        JobExecution last_job	=  dao_jpa.findTopBySchedulerIdOrderByIdDesc(id);
+         return mapToJobExecutionDto(last_job);
+               
+             }
+	
+public void automaticallysend(SchedulerJob schedulerJob,JobExecution job) {
+	
+	System.out.println("automatocally sended called");
+	
+System.out.println(job.getTrigger());
+	
+	
+    job.setScheduler(schedulerJob);  
+    job.setStarted_at(Instant.now());
+    System.out.println(schedulerJob.getRemindertype());
+    int found = 0, sent = 0, failed = 0, skipped = 0;
+    LocalDate current_date =LocalDate.now();
+    System.out.println("loop outside");
+    List<Invoice> invoices = dao.findAll();
+    System.out.println(invoices.isEmpty());
+    System.out.println("INVOICES INSIDE SERVICE = " + invoices);
+    System.out.println("INVOICE COUNT = " + invoices.size());
+    for (Invoice invoice : dao.findAll()) {
+    	System.out.println("loop entry");
+        if (invoice.getInvoice_status() == InvoiceStatus.PAID) continue;
+        System.out.println("inside paid");
+        long day = ChronoUnit.DAYS.between(current_date, invoice.getInvoice_due_date());
+        Reminderperiod type = (day > 0 && day < 5) ? Reminderperiod.Upcoming
+                             : (day == 0) ? Reminderperiod.Due_Today
+                             : Reminderperiod.Overdued;
+
+        System.out.println("Calculated type = " + type);
+        System.out.println("Scheduler type = " + schedulerJob.getRemindertype());
+        
+        if (type != schedulerJob.getRemindertype()) continue; // not this job's concern
+       
+        System.out.println("===== TYPE MATCHED =====");
+        System.out.println("Invoice ID = " + invoice.getId());
+        System.out.println("Current date = " + current_date);
+        
+        
+        found++;
+        //System.out.println(attempt.existsByInvoice_IdAndDateBetweenAndRemainderperiod(invoice.getId(), startOfDay, endOfDay, schedulerJob.getRemindertype()));
+        boolean alreadySent = attempt.existsByInvoice_IdAndDateAndRemainderperiod(invoice.getId(), current_date, schedulerJob.getRemindertype());
+        System.out.println();
+        
+        System.out.println("===== EXISTS CHECK COMPLETED =====");
+        System.out.println("Already sent = " + alreadySent);
+        
+        if (alreadySent) {
+        	System.out.println("alreadysent:"+alreadySent);
+            skipped++;
+        } else {
+		    	   ReminderAttempt remainder=new ReminderAttempt();
+		    	   remainder.setInvoice(invoice);
+		    	   remainder.setRemainderperiod(schedulerJob.getRemindertype());
+		    	   remainder.setDate(current_date);
+		    	   try {
+		    	   service.sendmail(invoice.getCustomer().getEmail(), "Invoice Reminder", "Your Invoice number :"+invoice.getInvoice_number()+"\n Invoice due date :"+invoice.getInvoice_due_date());
+		    	   remainder.setStatus("Success");
+		    	   sent++;
+		    	   attempt.save(remainder);
+		    	   }catch (Exception e) {
+		    		   remainder.setStatus("failure");
+		    		   failed++;
+		    		   attempt.save(remainder);
+		    		   e.printStackTrace();
+				}   
+		       }
+        }
+    
+
+    job.setFound(found); job.setSent(sent); job.setFailed(failed); job.setSkipped(skipped);
+    job.setEnded_at(Instant.now());
+    dao_jpa.save(job);
+    schedulerJob.setLastRunAt(LocalDateTime.now());
+    schedulerJob.setNextRunAt(computeNextRunAt(schedulerJob.getCron_expression()));
+    schedulerdao.save(schedulerJob);
+}
+  
+  @Override
+public List<SchedulerJob> getallschedulerjob() {
+	return schedulerdao.findAll();
+}
+  @Override
+public SchedulerJob enabletstatus(int id,Schdulerdto dto) {
+     
+	      SchedulerJob job = schedulerdao.getJobById(id);
+	      job.setEnabled(dto.isEnabled());
+	      SchedulerJob schedulerJob =  schedulerdao.save(job);
+	      rescheduleJob(schedulerJob);
+	      return schedulerJob;
+}
+  
+  @Override
+public SchedulerJob getjob(int id) {
+	
+	return schedulerdao.getJobById(id);
+}
+  
+//Mapping to job execution
+  public  Jobexecutionresponse mapToJobExecutionDto(JobExecution jobExecution){
+
+		     Jobexecutionresponse dto=new  Jobexecutionresponse();
+		     dto.setId(jobExecution.getId());
+		     dto.setTrigger(jobExecution.getTrigger());
+		     dto.setEnded_at(jobExecution.getEnded_at().atZone(ZoneId.systemDefault()).toLocalTime().withNano(0));
+		     dto.setStarted_at(jobExecution.getStarted_at().atZone(ZoneId.systemDefault()).toLocalTime().withNano(0));
+		     dto.setFound(jobExecution.getFound());
+		     dto.setSent(jobExecution.getSent());
+		     dto.setSkipped(jobExecution.getSkipped());
+		     dto.setFailed(jobExecution.getFailed());
+		     dto.setRemindertype(jobExecution.getScheduler().getRemindertype());
+		     dto.setScheduler_id(jobExecution.getScheduler().getId());
+		     dto.setSchduler_job_name(jobExecution.getScheduler().getJob_name());
+		
+		return dto;
+	}
+}
+
+
+
+

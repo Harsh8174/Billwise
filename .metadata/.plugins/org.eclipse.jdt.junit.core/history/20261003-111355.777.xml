@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="SchedulerServiceImplTest" project="Billwise" tests="1" started="1" failures="0" errors="1" ignored="0">
+  <testsuite name="com.app.scheduler_test.SchedulerServiceImplTest" time="0.001" displayname="SchedulerServiceImplTest" uniqueid="[engine:junit-jupiter]/[class:com.app.scheduler_test.SchedulerServiceImplTest]">
+    <testcase name="testUpcomingInvoiceReminder" classname="com.app.scheduler_test.SchedulerServiceImplTest" time="0.001" displayname="testUpcomingInvoiceReminder()" uniqueid="[engine:junit-jupiter]/[class:com.app.scheduler_test.SchedulerServiceImplTest]/[method:testUpcomingInvoiceReminder()]">
+      <error>java.lang.IllegalStateException: Failed to load ApplicationContext for [MergedContextConfiguration@751d7425 testClass = com.app.scheduler_test.SchedulerServiceImplTest, locations = [], classes = [com.app.BillwiseApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties = ["org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTestContextBootstrapper=true"], contextCustomizers = [[ImportsContextCustomizer@7eaa2bc6 key = [org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.jpa.test.autoconfigure.TestEntityManagerAutoConfiguration, org.springframework.boot.transaction.autoconfigure.TransactionAutoConfiguration, org.springframework.boot.transaction.autoconfigure.TransactionManagerCustomizationAutoConfiguration, org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration, org.springframework.boot.jdbc.autoconfigure.JdbcTemplateAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration, org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration, org.springframework.boot.jdbc.autoconfigure.DataSourceInitializationAutoConfiguration, org.springframework.boot.jdbc.autoconfigure.JdbcClientAutoConfiguration, org.springframework.boot.jdbc.test.autoconfigure.TestDatabaseAutoConfiguration, org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration]], org.springframework.boot.test.context.PropertyMappingContextCustomizer@1bcf5c9e, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@f73dcd6, org.springframework.boot.test.context.filter.annotation.TypeExcludeFiltersContextCustomizer@34be3d80, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@3b220bcb, org.springframework.boot.test.autoconfigure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportContextCustomizer@3dddefd8, org.springframework.boot.test.autoconfigure.OverrideAutoConfigurationContextCustomizerFactory$DisableAutoConfigurationContextCustomizer@5316e95f, org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0, org.springframework.boot.webmvc.test.autoconfigure.WebDriverContextCustomizer@1eb6749b, org.springframework.boot.web.server.context.SpringBootTestRandomPortContextCustomizer@2bef51f2, org.springframework.boot.test.context.SpringBootTestAnnotation@c474a074], contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]&#13;
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.lambda$loadContext$0(DefaultCacheAwareContextLoaderDelegate.java:195)&#13;
+	at org.springframework.test.context.cache.DefaultContextCache.put(DefaultContextCache.java:214)&#13;
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:160)&#13;
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:128)&#13;
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:156)&#13;
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:111)&#13;
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:260)&#13;
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:242)&#13;
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186)&#13;
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)&#13;
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:197)&#13;
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)&#13;
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716)&#13;
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)&#13;
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)&#13;
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153)&#13;
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176)&#13;
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)&#13;
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632)&#13;
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)&#13;
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Failed to initialize dependency 'flywayInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/flyway/autoconfigure/FlywayAutoConfiguration$FlywayConfiguration.class]: Failed to execute script V1__Seed_Data.sql
+------------------------------------------
+SQL State  : 42001
+Error Code : 42001
+Message    : Syntax error in SQL statement "create table admin(\000d\000a\0009id int PRIMARY KEY  [*]GENERATED ALWAYS AS IDENTITY,\000d\000a\0009username varchar(255) NOT NULL,\000d\000a\0009password varchar(255) NOT NULL\000d\000a)"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+create table admin(&#13;
+	id int PRIMARY KEY  GENERATED ALWAYS AS IDENTITY,&#13;
+	username varchar(255) NOT NULL,&#13;
+	password varchar(255) NOT NULL&#13;
+) [42001-240]
+Location   : db/migration/V1__Seed_Data.sql (F:\Billwise_System\Billwise\target\classes\db\migration\V1__Seed_Data.sql)
+Line       : 1
+Statement  : Run Flyway with -X option to see the actual statement causing the problem
+&#13;
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:322)&#13;
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201)&#13;
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977)&#13;
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)&#13;
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756)&#13;
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445)&#13;
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321)&#13;
+	at org.springframework.boot.test.context.SpringBootContextLoader.lambda$loadContext$2(SpringBootContextLoader.java:155)&#13;
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:58)&#13;
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:46)&#13;
+	at org.springframework.boot.SpringApplication.withHook(SpringApplication.java:1465)&#13;
+	at org.springframework.boot.test.context.SpringBootContextLoader$ContextLoaderHook.run(SpringBootContextLoader.java:600)&#13;
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:155)&#13;
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:114)&#13;
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:247)&#13;
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.lambda$loadContext$0(DefaultCacheAwareContextLoaderDelegate.java:167)&#13;
+	... 21 more&#13;
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/flyway/autoconfigure/FlywayAutoConfiguration$FlywayConfiguration.class]: Failed to execute script V1__Seed_Data.sql
+------------------------------------------
+SQL State  : 42001
+Error Code : 42001
+Message    : Syntax error in SQL statement "create table admin(\000d\000a\0009id int PRIMARY KEY  [*]GENERATED ALWAYS AS IDENTITY,\000d\000a\0009username varchar(255) NOT NULL,\000d\000a\0009password varchar(255) NOT NULL\000d\000a)"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+create table admin(&#13;
+	id int PRIMARY KEY  GENERATED ALWAYS AS IDENTITY,&#13;
+	username varchar(255) NOT NULL,&#13;
+	password varchar(255) NOT NULL&#13;
+) [42001-240]
+Location   : db/migration/V1__Seed_Data.sql (F:\Billwise_System\Billwise\target\classes\db\migration\V1__Seed_Data.sql)
+Line       : 1
+Statement  : Run Flyway with -X option to see the actual statement causing the problem
+&#13;
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1815)&#13;
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603)&#13;
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)&#13;
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)&#13;
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)&#13;
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)&#13;
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196)&#13;
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:309)&#13;
+	... 36 more&#13;
+Caused by: org.flywaydb.core.internal.exception.FlywayMigrateException: Failed to execute script V1__Seed_Data.sql
+------------------------------------------
+SQL State  : 42001
+Error Code : 42001
+Message    : Syntax error in SQL statement "create table admin(\000d\000a\0009id int PRIMARY KEY  [*]GENERATED ALWAYS AS IDENTITY,\000d\000a\0009username varchar(255) NOT NULL,\000d\000a\0009password varchar(255) NOT NULL\000d\000a)"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+create table admin(&#13;
+	id int PRIMARY KEY  GENERATED ALWAYS AS IDENTITY,&#13;
+	username varchar(255) NOT NULL,&#13;
+	password varchar(255) NOT NULL&#13;
+) [42001-240]
+Location   : db/migration/V1__Seed_Data.sql (F:\Billwise_System\Billwise\target\classes\db\migration\V1__Seed_Data.sql)
+Line       : 1
+Statement  : Run Flyway with -X option to see the actual statement causing the problem
+&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.doMigrateGroup(DbMigrate.java:399)&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.lambda$applyMigrations$1(DbMigrate.java:283)&#13;
+	at org.flywaydb.core.internal.jdbc.TransactionalExecutionTemplate.execute(TransactionalExecutionTemplate.java:59)&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.applyMigrations(DbMigrate.java:282)&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.migrateGroup(DbMigrate.java:255)&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.lambda$migrateAll$0(DbMigrate.java:153)&#13;
+	at org.flywaydb.core.internal.jdbc.TableLockingExecutionTemplate$1.call(TableLockingExecutionTemplate.java:40)&#13;
+	at org.flywaydb.core.internal.jdbc.TransactionalExecutionTemplate.execute(TransactionalExecutionTemplate.java:59)&#13;
+	at org.flywaydb.core.internal.jdbc.TableLockingExecutionTemplate.execute(TableLockingExecutionTemplate.java:35)&#13;
+	at org.flywaydb.core.internal.database.base.Connection.lock(Connection.java:106)&#13;
+	at org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory.lock(JdbcTableSchemaHistory.java:165)&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.migrateAll(DbMigrate.java:153)&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.migrate(DbMigrate.java:104)&#13;
+	at org.flywaydb.core.Flyway.lambda$migrate$3(Flyway.java:231)&#13;
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:236)&#13;
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:120)&#13;
+	at org.flywaydb.core.Flyway.migrate(Flyway.java:181)&#13;
+	at org.springframework.boot.flyway.autoconfigure.FlywayMigrationInitializer.afterPropertiesSet(FlywayMigrationInitializer.java:67)&#13;
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862)&#13;
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811)&#13;
+	... 43 more&#13;
+Caused by: org.flywaydb.core.internal.sqlscript.FlywaySqlScriptException: Failed to execute script V1__Seed_Data.sql
+------------------------------------------
+SQL State  : 42001
+Error Code : 42001
+Message    : Syntax error in SQL statement "create table admin(\000d\000a\0009id int PRIMARY KEY  [*]GENERATED ALWAYS AS IDENTITY,\000d\000a\0009username varchar(255) NOT NULL,\000d\000a\0009password varchar(255) NOT NULL\000d\000a)"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+create table admin(&#13;
+	id int PRIMARY KEY  GENERATED ALWAYS AS IDENTITY,&#13;
+	username varchar(255) NOT NULL,&#13;
+	password varchar(255) NOT NULL&#13;
+) [42001-240]
+Location   : db/migration/V1__Seed_Data.sql (F:\Billwise_System\Billwise\target\classes\db\migration\V1__Seed_Data.sql)
+Line       : 1
+Statement  : Run Flyway with -X option to see the actual statement causing the problem
+&#13;
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.handleException(DefaultSqlScriptExecutor.java:251)&#13;
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.executeStatement(DefaultSqlScriptExecutor.java:212)&#13;
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.execute(DefaultSqlScriptExecutor.java:134)&#13;
+	at org.flywaydb.core.internal.resolver.sql.SqlMigrationExecutor.executeOnce(SqlMigrationExecutor.java:75)&#13;
+	at org.flywaydb.core.internal.resolver.sql.SqlMigrationExecutor.lambda$execute$0(SqlMigrationExecutor.java:66)&#13;
+	at org.flywaydb.core.internal.database.DefaultExecutionStrategy.execute(DefaultExecutionStrategy.java:31)&#13;
+	at org.flywaydb.core.internal.resolver.sql.SqlMigrationExecutor.execute(SqlMigrationExecutor.java:65)&#13;
+	at org.flywaydb.core.internal.command.DbMigrate.doMigrateGroup(DbMigrate.java:391)&#13;
+	... 62 more&#13;
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table admin(\000d\000a\0009id int PRIMARY KEY  [*]GENERATED ALWAYS AS IDENTITY,\000d\000a\0009username varchar(255) NOT NULL,\000d\000a\0009password varchar(255) NOT NULL\000d\000a)"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+create table admin(&#13;
+	id int PRIMARY KEY  GENERATED ALWAYS AS IDENTITY,&#13;
+	username varchar(255) NOT NULL,&#13;
+	password varchar(255) NOT NULL&#13;
+) [42001-240]&#13;
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)&#13;
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)&#13;
+	at org.h2.message.DbException.getSyntaxError(DbException.java:261)&#13;
+	at org.h2.command.ParserBase.getSyntaxError(ParserBase.java:762)&#13;
+	at org.h2.command.ParserBase.read(ParserBase.java:369)&#13;
+	at org.h2.command.ParserBase.readIfMore(ParserBase.java:637)&#13;
+	at org.h2.command.Parser.parseCreateTable(Parser.java:8927)&#13;
+	at org.h2.command.Parser.parseCreate(Parser.java:6483)&#13;
+	at org.h2.command.Parser.parsePrepared(Parser.java:648)&#13;
+	at org.h2.command.Parser.parse(Parser.java:584)&#13;
+	at org.h2.command.Parser.parse(Parser.java:564)&#13;
+	at org.h2.command.Parser.prepareCommand(Parser.java:487)&#13;
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:647)&#13;
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:563)&#13;
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1160)&#13;
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)&#13;
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)&#13;
+	at org.flywaydb.core.internal.jdbc.JdbcTemplate.executeStatement(JdbcTemplate.java:229)&#13;
+	at org.flywaydb.core.internal.sqlscript.ParsedSqlStatement.execute(ParsedSqlStatement.java:88)&#13;
+	at org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor.executeStatement(DefaultSqlScriptExecutor.java:207)&#13;
+	... 68 more&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>

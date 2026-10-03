@@ -54,8 +54,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 			    else if(day<0) {
 			    	invoice2.setInvoice_status(InvoiceStatus.OVERDUE);
 			    	dao.save(invoice2);
-			    }else {
+			    }else if(day==0){
 			    	invoice2.setInvoice_status(InvoiceStatus.DUE);
+			    	dao.save(invoice2);
+			    }else {
+			    	invoice2.setInvoice_status(InvoiceStatus.NEW);
 			    	dao.save(invoice2);
 			    }
 		    }

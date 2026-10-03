@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="Rerun testUpcomingInvoiceReminder()" project="Billwise" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="com.app.scheduler_test.SchedulerServiceImplTest" time="2.577" displayname="SchedulerServiceImplTest" uniqueid="[engine:junit-jupiter]/[class:com.app.scheduler_test.SchedulerServiceImplTest]">
+    <testcase name="testUpcomingInvoiceReminder" classname="com.app.scheduler_test.SchedulerServiceImplTest" time="2.577" displayname="testUpcomingInvoiceReminder()" uniqueid="[engine:junit-jupiter]/[class:com.app.scheduler_test.SchedulerServiceImplTest]/[method:testUpcomingInvoiceReminder()]"/>
+  </testsuite>
+</testrun>
