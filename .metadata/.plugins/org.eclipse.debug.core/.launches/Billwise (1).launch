@@ -6,6 +6,7 @@
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="4"/>
     </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables"/>
     <stringAttribute key="org.eclipse.debug.core.terminate.timestamp" value="1791003796681"/>
     <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=Billwise"/>
     <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
