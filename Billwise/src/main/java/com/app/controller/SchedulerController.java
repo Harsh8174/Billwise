@@ -23,7 +23,7 @@ import com.app.services.SchedulerService;
 
 @RestController
 @RequestMapping("schedule")
-@CrossOrigin(origins = "http://localhost:5500",allowCredentials = "true")
+@CrossOrigin(origins = "https://billwise-production-d8b0.up.railway.app",allowCredentials = "true")
 public class SchedulerController {
 	@Autowired
 private	SchedulerService service;

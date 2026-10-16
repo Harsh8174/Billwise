@@ -25,7 +25,7 @@ import com.app.services.InvoiceService;
 
 @RestController
 @RequestMapping("invoice")
-@CrossOrigin(origins = "http://localhost:5500",allowCredentials = "true")
+@CrossOrigin(origins = "https://billwise-production-d8b0.up.railway.app",allowCredentials = "true")
 public class InvoiceController {
 	@Autowired
  private InvoiceService service;
