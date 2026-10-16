@@ -23,7 +23,7 @@ import com.app.services.SchedulerService;
 
 @RestController
 @RequestMapping("schedule")
-@CrossOrigin(origins = "https://singular-taiyaki-9b227b.netlify.app/",allowCredentials = "true")
+@CrossOrigin(origins = "https://effulgent-seahorse-6e2581.netlify.app",allowCredentials = "true")
 public class SchedulerController {
 	@Autowired
 private	SchedulerService service;
