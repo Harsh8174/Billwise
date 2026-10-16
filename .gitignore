@@ -1,2 +1,6 @@
 Video.mp4
 Video.mp4
+
+# Eclipse workspace files
+.metadata/
+**/.metadata/
