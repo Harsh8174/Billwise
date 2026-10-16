@@ -23,7 +23,7 @@ import com.app.services.SchedulerService;
 
 @RestController
 @RequestMapping("admin")
-@CrossOrigin(origins = "https://beamish-dodol-158cde.netlify.app",allowCredentials = "true")
+@CrossOrigin(origins = "https://singular-taiyaki-9b227b.netlify.app/",allowCredentials = "true")
 public class AdminController {
 	@Autowired
 	private AdminService service;
