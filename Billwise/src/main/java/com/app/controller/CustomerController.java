@@ -18,7 +18,7 @@ import com.app.services.CustomerService;
 
 @RestController
 @RequestMapping("customer")
-@CrossOrigin(origins = "https://effulgent-seahorse-6e2581.netlify.app",allowCredentials = "true")
+@CrossOrigin(origins = "https://lighthearted-pasca-92ccb2.netlify.app",allowCredentials = "true")
 public class CustomerController {
     
 	@Autowired
