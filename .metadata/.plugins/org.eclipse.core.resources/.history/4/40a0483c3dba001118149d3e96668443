@@ -1,7 +1,0 @@
-package com.app.services;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface JobExecutionService extends JpaRepository<T, ID> {
-
-}

@@ -1,7 +1,0 @@
-package com.app.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface Invoicejpa extends JpaRepository<Invoice, Integer> {
-
-}

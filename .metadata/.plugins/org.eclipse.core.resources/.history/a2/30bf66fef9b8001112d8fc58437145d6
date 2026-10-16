@@ -1,7 +1,0 @@
-package com.app.models;
-
-public class ReminderAttempt {
-    private int id;
-    private enum Remainderperiod;
-    private 
-}

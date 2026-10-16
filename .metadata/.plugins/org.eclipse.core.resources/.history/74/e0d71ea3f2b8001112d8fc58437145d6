@@ -1,5 +1,0 @@
-create table Admin(
- admin_id int primary key auto increament,
- username varchar(255) ,
-  password varchar(255)
-);

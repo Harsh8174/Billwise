@@ -115,7 +115,6 @@ public class SchedulerServiceImpl implements SchedulerService {
 			rescheduleJob(obj);
 		}
 	}
-	
 	private void rescheduleJob(SchedulerJob schedulerJob) {
 	
 		// 1. If a task is already running for this job's id, cancel it first
