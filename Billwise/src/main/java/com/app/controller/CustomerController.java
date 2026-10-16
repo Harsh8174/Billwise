@@ -18,7 +18,7 @@ import com.app.services.CustomerService;
 
 @RestController
 @RequestMapping("customer")
-@CrossOrigin(origins = "https://billwise-production-d8b0.up.railway.app",allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:5500",allowCredentials = "true")
 public class CustomerController {
     
 	@Autowired
