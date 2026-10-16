@@ -886,3 +886,5 @@
 {"logTime": "1016/070738", "level": "INFO", "message": "Preference changed: name=edge_rewards.hva_promotions, new_value=[object], source=unknown"}
 {"logTime": "1016/070747", "level": "INFO", "message": "PrefStore write completed: store=4, success=true"}
 {"logTime": "1016/070747", "level": "INFO", "message": "PrefStore write completed: store=4, success=true"}
+{"logTime": "1016/071406", "level": "INFO", "message": "Preference changed: name=sessions.event_log, new_value=[object], source=unknown"}
+{"logTime": "1016/071416", "level": "INFO", "message": "PrefStore write completed: store=4, success=true"}
